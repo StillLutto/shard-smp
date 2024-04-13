@@ -1,0 +1,4 @@
+name: shard-smp
+version: '${version}'
+main: me.lutto.shardsmp.ShardSMP
+api-version: '1.20'
