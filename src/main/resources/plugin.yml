@@ -2,3 +2,7 @@ name: shard-smp
 version: '${version}'
 main: me.lutto.shardsmp.ShardSMP
 api-version: '1.20'
+commands:
+  giveitem:
+    description: Give yourself a custom item!
+    default: op
