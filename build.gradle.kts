@@ -1,6 +1,8 @@
 plugins {
     java
     kotlin("jvm")
+    id("io.papermc.paperweight.userdev") version "1.5.15"
+    id("xyz.jpenilla.run-paper") version "2.2.3" // Adds runServer and runMojangMappedServer tasks for testing
 }
 
 group = "me.lutto"
@@ -17,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
     implementation(kotlin("stdlib-jdk8"))
 }
 
