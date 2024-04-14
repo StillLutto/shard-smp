@@ -10,7 +10,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
-class ItemManager(val shardSMP: ShardSMP) {
+class ItemManager(private val shardSMP: ShardSMP) {
 
     private var itemList: MutableList<CustomItem> = mutableListOf()
 
