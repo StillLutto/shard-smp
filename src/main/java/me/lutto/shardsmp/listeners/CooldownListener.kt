@@ -2,11 +2,13 @@ package me.lutto.shardsmp.listeners
 
 import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
+import me.lutto.shardsmp.AbilityActivatedEvent
 import me.lutto.shardsmp.ShardSMP
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -78,6 +80,8 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
         player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
         itemCooldown[itemId]!!.asMap()[itemUUID] = System.currentTimeMillis() + ((shardSMP.itemManager.getCooldown(itemId) ?: return).second) * 1000
+
+        Bukkit.getPluginManager().callEvent(AbilityActivatedEvent(player, shardSMP.itemManager.getItem(itemId)!!))
     }
 
 }
