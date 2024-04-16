@@ -1,4 +1,4 @@
-package me.lutto.shardsmp.listeners.weapons
+package me.lutto.shardsmp.listeners
 
 import me.lutto.shardsmp.ShardSMP
 import org.bukkit.entity.EntityType
