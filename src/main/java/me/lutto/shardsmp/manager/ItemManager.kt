@@ -69,7 +69,7 @@ class ItemManager(private val shardSMP: ShardSMP) {
             MiniMessage.miniMessage().deserialize("<gradient:#1616aa:#3646ff>Poseidon's Trident").decoration(TextDecoration.ITALIC, false),
             listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
             11,
-            Pair(false, 180)
+            Pair(true, 180)
         )
         createItem(
             "pyro_sword",
