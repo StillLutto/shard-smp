@@ -6,6 +6,7 @@ import me.lutto.shardsmp.listeners.CooldownListener
 import me.lutto.shardsmp.listeners.ShardListener
 import me.lutto.shardsmp.listeners.weapons.EarthShattererListener
 import me.lutto.shardsmp.listeners.weapons.EnderBowListener
+import me.lutto.shardsmp.listeners.weapons.LifestealerListener
 import me.lutto.shardsmp.manager.ItemManager
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -22,6 +23,7 @@ class ShardSMP : JavaPlugin() {
 
         Bukkit.getPluginManager().registerEvents(EarthShattererListener(this), this)
         Bukkit.getPluginManager().registerEvents(EnderBowListener(this), this)
+        Bukkit.getPluginManager().registerEvents(LifestealerListener(this), this)
 
         getCommand("giveitem")!!.setExecutor(GiveItemCommand(this))
         getCommand("giveitem")!!.setTabCompleter(GiveItemTabCompleter(this))
