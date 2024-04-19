@@ -4,6 +4,7 @@ import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
 import me.lutto.shardsmp.AbilityActivatedEvent
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.instance.CustomItem
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -26,8 +27,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
     init {
         for (customItem in shardSMP.itemManager.getItemList()) {
-            if (shardSMP.itemManager.getCooldown(customItem.getId())?.second?.toLong() == null) continue
-            itemCooldown[customItem.getId()] = CacheBuilder.newBuilder().expireAfterWrite(shardSMP.itemManager.getCooldown(customItem.getId())?.second!!.toLong(), TimeUnit.SECONDS).build()
+            itemCooldown[customItem.getId()] = CacheBuilder.newBuilder().expireAfterWrite((customItem.getCooldownTime() ?: continue), TimeUnit.SECONDS).build()
         }
     }
 
@@ -44,13 +44,12 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         val customItemKey = NamespacedKey(shardSMP, "custom_item")
         if (itemInMainHand.itemMeta != null && !itemInMainHand.itemMeta.persistentDataContainer.has(customItemKey)) return
         val itemId: String = itemInMainHand.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] ?: return
+        val customItem: CustomItem = shardSMP.itemManager.getItem(itemId) ?: return
 
-        if (shardSMP.itemManager.getItem(itemId) == null) return
-
-        if (shardSMP.itemManager.getCooldown(itemId)?.first!!) {
-            if (!(event.action == Action.LEFT_CLICK_AIR || event.action == Action.LEFT_CLICK_BLOCK)) return
-        } else {
+        if (customItem.isRightClick() != null && customItem.isRightClick()!!) {
             if (!(event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)) return
+        } else {
+            if (!(event.action == Action.LEFT_CLICK_AIR || event.action == Action.LEFT_CLICK_BLOCK)) return
         }
 
         val uuidKey = NamespacedKey(shardSMP, "uuid")
@@ -79,9 +78,9 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         }
 
         player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
-        itemCooldown[itemId]!!.asMap()[itemUUID] = System.currentTimeMillis() + ((shardSMP.itemManager.getCooldown(itemId) ?: return).second) * 1000
+        itemCooldown[itemId]!!.asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime() ?: return) * 1000
 
-        Bukkit.getPluginManager().callEvent(AbilityActivatedEvent(player, shardSMP.itemManager.getItem(itemId)!!))
+        Bukkit.getPluginManager().callEvent(AbilityActivatedEvent(player, customItem))
     }
 
 }
