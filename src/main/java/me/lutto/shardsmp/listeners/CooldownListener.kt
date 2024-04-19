@@ -1,6 +1,5 @@
 package me.lutto.shardsmp.listeners
 
-import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
 import me.lutto.shardsmp.AbilityActivatedEvent
 import me.lutto.shardsmp.ShardSMP
@@ -11,6 +10,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
@@ -23,12 +23,17 @@ import java.util.concurrent.TimeUnit
 
 class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
-    private val itemCooldown: MutableMap<String, Cache<UUID, Long>> = mutableMapOf()
-
     init {
         for (customItem in shardSMP.itemManager.getItemList()) {
-            itemCooldown[customItem.getId()] = CacheBuilder.newBuilder().expireAfterWrite((customItem.getCooldownTime() ?: continue), TimeUnit.SECONDS).build()
+            shardSMP.itemManager.setItemCooldown(customItem.getId(), CacheBuilder.newBuilder().expireAfterWrite((customItem.getCooldownTime() ?: continue), TimeUnit.SECONDS).build())
         }
+    }
+
+    private fun getCustomItem(item: ItemStack): CustomItem? {
+        val customItemKey = NamespacedKey(shardSMP, "custom_item")
+        if (item.itemMeta != null && !item.itemMeta.persistentDataContainer.has(customItemKey)) return null
+        val itemId: String = item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] ?: return null
+        return shardSMP.itemManager.getItem(itemId)
     }
 
     @EventHandler
@@ -60,9 +65,9 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         }
 
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING] ?: return)
-        if (itemCooldown[itemId] == null) return
-        if (itemCooldown[itemId]!!.asMap().containsKey(itemUUID)) {
-            val durationLeft: Long = (itemCooldown[itemId]!!.asMap()[itemUUID] ?: return) - System.currentTimeMillis()
+        val currentItemCooldown = shardSMP.itemManager.getItemCooldown()[itemId] ?: return
+        if (currentItemCooldown.asMap().containsKey(itemUUID)) {
+            val durationLeft: Long = (currentItemCooldown.asMap()[itemUUID] ?: return) - System.currentTimeMillis()
             if (TimeUnit.MILLISECONDS.toMinutes(durationLeft) >= 2) {
                 player.sendActionBar(
                     MiniMessage.miniMessage().deserialize(
@@ -77,10 +82,29 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
             return
         }
 
-        player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
-        itemCooldown[itemId]!!.asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime() ?: return) * 1000
+        if (!(customItem.isUsedOnActivation() ?: return) && customItem.isActivated()) {
+            player.sendActionBar(MiniMessage.miniMessage().deserialize("<red>${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated"))
+            return customItem.setIsActivated(false)
+        } else if(!(customItem.isUsedOnActivation() ?: return)) {
+            player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
+            return customItem.setIsActivated(true)
+        }
 
         Bukkit.getPluginManager().callEvent(AbilityActivatedEvent(player, customItem))
+    }
+
+    @EventHandler
+    fun onAbilityActivate(event: AbilityActivatedEvent) {
+        val player: Player = event.getPlayer()
+        val itemInMainHand = player.inventory.itemInMainHand
+
+        val uuidKey = NamespacedKey(shardSMP, "uuid")
+        val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING] ?: return)
+        val customItem: CustomItem = getCustomItem(itemInMainHand) ?: return
+
+        player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
+        (shardSMP.itemManager.getItemCooldown()[customItem.getId()] ?: return).asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime() ?: return) * 1000
+        customItem.setIsActivated(false)
     }
 
 }

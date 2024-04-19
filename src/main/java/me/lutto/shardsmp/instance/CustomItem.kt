@@ -12,6 +12,8 @@ class CustomItem(
     private val useOnActivation: Boolean?
 ) {
 
+    private var isActivated: Boolean = false // only used for items that have their ability be used instantly after activation
+
     init {
         val itemMeta = item.itemMeta
         itemMeta.displayName()
@@ -60,9 +62,15 @@ class CustomItem(
         item = itemStack
     }
 
+    fun setIsActivated(isActivated: Boolean) {
+        this.isActivated = isActivated
+    }
+
     fun getId(): String = id
     fun getItemStack(): ItemStack = item
     fun isRightClick(): Boolean? = rightClick
     fun getCooldownTime(): Long? = cooldownTime
     fun isUsedOnActivation(): Boolean? = useOnActivation
+
+    fun isActivated(): Boolean = isActivated
 }

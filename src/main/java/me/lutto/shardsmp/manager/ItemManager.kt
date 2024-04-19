@@ -1,8 +1,8 @@
 package me.lutto.shardsmp.manager
 
+import com.google.common.cache.Cache
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.instance.CustomItem
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
@@ -15,7 +15,7 @@ class ItemManager(private val shardSMP: ShardSMP) {
 
     private var itemList: MutableList<CustomItem> = mutableListOf()
 
-    private var cooldownMap: MutableMap<String, Pair<Boolean, Int>> = mutableMapOf()
+    private val itemCooldown: MutableMap<String, Cache<UUID, Long>> = mutableMapOf()
 
     private val miniMessage: MiniMessage = MiniMessage.miniMessage()
 
@@ -144,6 +144,11 @@ class ItemManager(private val shardSMP: ShardSMP) {
         return null
     }
 
+    fun setItemCooldown(id: String, cache: Cache<UUID, Long>) {
+        itemCooldown[id] = cache
+    }
+
     fun getItemList(): MutableList<CustomItem> = itemList
+    fun getItemCooldown(): Map<String, Cache<UUID, Long>> = itemCooldown
 
 }
