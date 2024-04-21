@@ -50,3 +50,9 @@ tasks.processResources {
         expand(props)
     }
 }
+
+tasks.withType<Jar> {
+    // customize this to your needs
+    destinationDirectory = File(providers.environmentVariable("buildPath").get())
+}
+
