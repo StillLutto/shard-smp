@@ -20,7 +20,7 @@ class MjolnirListener(private val shardSMP: ShardSMP) : Listener {
 
     fun hitNearbyEntities(world: World, centerRadiusLocation: Location) {
         for (nearbyEntity in world.getNearbyEntities(centerRadiusLocation, 5.0, 5.0, 5.0)) {
-            if (nearbyEntity !is Player) return
+            if (nearbyEntity !is Player) continue
             val nearbyPlayer: Player = nearbyEntity
 
             launchPlayer(nearbyPlayer, centerRadiusLocation, 1.0)
@@ -37,7 +37,7 @@ class MjolnirListener(private val shardSMP: ShardSMP) : Listener {
         val thrownMjolnir: ItemDisplay = player.world.spawnEntity(player.eyeLocation, EntityType.ITEM_DISPLAY) as ItemDisplay
         thrownMjolnir.itemStack = shardSMP.itemManager.getItem("mjolnir")!!.getItemStack()
         thrownMjolnir.itemDisplayTransform = ItemDisplay.ItemDisplayTransform.THIRDPERSON_RIGHTHAND
-        val velocity = player.location.direction.multiply(0.2)
+        val velocity = player.location.direction.multiply(0.75)
 
         object : BukkitRunnable() {
             override fun run() {
