@@ -6,3 +6,6 @@ commands:
   giveitem:
     description: Give yourself a custom item!
     default: op
+  resetcooldown:
+    description: Reset item cooldowns!
+    default: op

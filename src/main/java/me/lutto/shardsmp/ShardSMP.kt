@@ -1,7 +1,9 @@
 package me.lutto.shardsmp
 
 import me.lutto.shardsmp.commands.GiveItemCommand
+import me.lutto.shardsmp.commands.ResetCooldownCommand
 import me.lutto.shardsmp.commands.tabcompleters.GiveItemTabCompleter
+import me.lutto.shardsmp.commands.tabcompleters.ResetCooldownTabCompleter
 import me.lutto.shardsmp.listeners.CooldownListener
 import me.lutto.shardsmp.listeners.ShardListener
 import me.lutto.shardsmp.listeners.weapons.*
@@ -27,6 +29,8 @@ class ShardSMP : JavaPlugin() {
 
         getCommand("giveitem")!!.setExecutor(GiveItemCommand(this))
         getCommand("giveitem")!!.setTabCompleter(GiveItemTabCompleter(this))
+        getCommand("resetcooldown")!!.setExecutor(ResetCooldownCommand(this))
+        getCommand("resetcooldown")!!.setTabCompleter(ResetCooldownTabCompleter(this))
     }
 
 }

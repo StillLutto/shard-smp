@@ -148,6 +148,11 @@ class ItemManager(private val shardSMP: ShardSMP) {
         itemCooldown[id] = cache
     }
 
+    fun resetItemCooldown(id: String, uuid: UUID) {
+        itemCooldown[id]?.invalidate(uuid)
+        shardSMP.itemManager.getItem(id)?.setIsActivated(false)
+    }
+
     fun getItemList(): MutableList<CustomItem> = itemList
     fun getItemCooldown(): Map<String, Cache<UUID, Long>> = itemCooldown
 
