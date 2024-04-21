@@ -24,6 +24,10 @@ class ResetCooldownCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             }
 
             val itemInMainHand: ItemStack = sender.inventory.itemInMainHand
+            if (itemInMainHand.isEmpty) {
+                sender.sendRichMessage("<red>You have nothing in your hand!")
+                return false
+            }
             val customItemKey = NamespacedKey(shardSMP, "custom_item")
             if (itemInMainHand.itemMeta != null && !itemInMainHand.itemMeta.persistentDataContainer.has(customItemKey)) {
                 sender.sendRichMessage("<red>This is not a custom item!")
@@ -38,6 +42,7 @@ class ResetCooldownCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             val itemId: String = itemInMainHand.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] ?: return false
 
             shardSMP.itemManager.resetItemCooldown(itemId, itemUUID)
+            sender.sendRichMessage("<green>Cooldown has been reset!")
 
             return true
         }
