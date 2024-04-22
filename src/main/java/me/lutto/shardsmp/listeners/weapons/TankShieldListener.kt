@@ -1,6 +1,6 @@
 package me.lutto.shardsmp.listeners.weapons
 
-import me.lutto.shardsmp.AbilityActivatedEvent
+import me.lutto.shardsmp.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.instance.CustomItem
 import net.kyori.adventure.text.Component
@@ -19,7 +19,7 @@ import org.bukkit.potion.PotionEffectType
 class TankShieldListener(private val shardSMP: ShardSMP) : Listener {
 
     @EventHandler
-    fun onAbilityActivate(event: AbilityActivatedEvent) {
+    fun onAbilityActivate(event: AbilityActivateEvent) {
         if (event.getCustomItem() != shardSMP.itemManager.getItem("tank_shield")) return
         val player: Player = event.getPlayer()
         val customItem: CustomItem = event.getCustomItem()

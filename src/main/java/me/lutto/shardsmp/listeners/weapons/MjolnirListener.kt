@@ -1,6 +1,6 @@
 package me.lutto.shardsmp.listeners.weapons
 
-import me.lutto.shardsmp.AbilityActivatedEvent
+import me.lutto.shardsmp.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import org.bukkit.*
 import org.bukkit.entity.EntityType
@@ -29,7 +29,7 @@ class MjolnirListener(private val shardSMP: ShardSMP) : Listener {
     }
 
     @EventHandler
-    fun onAbilityActivated(event: AbilityActivatedEvent) {
+    fun onAbilityActivated(event: AbilityActivateEvent) {
         if (event.getCustomItem() != shardSMP.itemManager.getItem("mjolnir")) return
         val player: Player = event.getPlayer()
         val world = player.world

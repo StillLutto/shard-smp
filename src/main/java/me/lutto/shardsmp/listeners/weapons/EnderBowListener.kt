@@ -1,11 +1,9 @@
 package me.lutto.shardsmp.listeners.weapons
 
-import me.lutto.shardsmp.AbilityActivatedEvent
+import me.lutto.shardsmp.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.instance.CustomItem
-import me.lutto.shardsmp.listeners.CooldownListener
 import org.bukkit.*
-import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -57,7 +55,7 @@ class EnderBowListener(private val shardSMP: ShardSMP) : Listener {
         player.playSound(player, Sound.ENTITY_ENDER_PEARL_THROW, 1.0f, 1.0f)
         player.spawnParticle(Particle.PORTAL, player.location, 100)
 
-        Bukkit.getPluginManager().callEvent(AbilityActivatedEvent(player, customItem))
+        Bukkit.getPluginManager().callEvent(AbilityActivateEvent(player, customItem))
     }
 
 }

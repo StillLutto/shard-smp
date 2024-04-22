@@ -1,7 +1,7 @@
 package me.lutto.shardsmp.listeners
 
 import com.google.common.cache.CacheBuilder
-import me.lutto.shardsmp.AbilityActivatedEvent
+import me.lutto.shardsmp.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.instance.CustomItem
 import net.kyori.adventure.text.Component
@@ -38,7 +38,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
-        val player = event.player
+        val player: Player = event.player
 
         if (event.hand != EquipmentSlot.HAND) return
         if (!(player.isSneaking)) return
@@ -90,11 +90,11 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
             return customItem.setIsActivated(true)
         }
 
-        Bukkit.getPluginManager().callEvent(AbilityActivatedEvent(player, customItem))
+        Bukkit.getPluginManager().callEvent(AbilityActivateEvent(player, customItem))
     }
 
     @EventHandler
-    fun onAbilityActivate(event: AbilityActivatedEvent) {
+    fun onAbilityActivate(event: AbilityActivateEvent) {
         val player: Player = event.getPlayer()
         val itemInMainHand = player.inventory.itemInMainHand
 

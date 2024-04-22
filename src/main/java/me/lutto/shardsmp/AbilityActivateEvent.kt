@@ -5,7 +5,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
-class AbilityActivatedEvent(private val player: Player, private val customItem: CustomItem) : Event() {
+class AbilityActivateEvent(private val player: Player, private val customItem: CustomItem) : Event() {
 
     companion object {
         val HANDLERS = HandlerList()
