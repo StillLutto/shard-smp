@@ -53,6 +53,7 @@ class TankShieldListener(private val shardSMP: ShardSMP) : Listener {
             val customItemKey = NamespacedKey(shardSMP, "custom_item")
             val uuidKey = NamespacedKey(shardSMP, "uuid")
 
+            if (item == null) continue
             if (item.itemMeta == null) continue
             if (!item.itemMeta.persistentDataContainer.has(customItemKey)) continue
             if (!item.itemMeta.persistentDataContainer.has(uuidKey)) continue
