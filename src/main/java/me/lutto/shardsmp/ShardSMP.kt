@@ -25,6 +25,7 @@ class ShardSMP : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(EnderBowListener(this), this)
         Bukkit.getPluginManager().registerEvents(LifestealerListener(this), this)
         Bukkit.getPluginManager().registerEvents(MjolnirListener(this), this)
+        Bukkit.getPluginManager().registerEvents(PoseidonTridentListener(this), this)
         Bukkit.getPluginManager().registerEvents(TankShieldListener(this), this)
         Bukkit.getPluginManager().registerEvents(TitansEdgeListener(this), this)
 
