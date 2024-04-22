@@ -2,6 +2,7 @@ package me.lutto.shardsmp.listeners
 
 import com.google.common.cache.CacheBuilder
 import me.lutto.shardsmp.AbilityActivateEvent
+import me.lutto.shardsmp.AbilityDeactivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.instance.CustomItem
 import net.kyori.adventure.text.Component
@@ -83,8 +84,9 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         }
 
         if (!(customItem.isUsedOnActivation() ?: return) && customItem.isActivated()) {
+            Bukkit.getPluginManager().callEvent(AbilityDeactivateEvent(player, customItem))
             player.sendActionBar(MiniMessage.miniMessage().deserialize("<red>${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated"))
-            return customItem.setIsActivated(false)
+            return Bukkit.getPluginManager().callEvent(AbilityDeactivateEvent(player, customItem))
         } else if(!(customItem.isUsedOnActivation() ?: return)) {
             player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
             return customItem.setIsActivated(true)
@@ -100,10 +102,21 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
         val uuidKey = NamespacedKey(shardSMP, "uuid")
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING] ?: return)
-        val customItem: CustomItem = getCustomItem(itemInMainHand) ?: return
+        val customItem: CustomItem = event.getCustomItem()
 
         player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
         (shardSMP.itemManager.getItemCooldown()[customItem.getId()] ?: return).asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime() ?: return) * 1000
+        customItem.setIsActivated(false)
+    }
+
+    @EventHandler
+    fun onAbilityDeactivate(event: AbilityDeactivateEvent) {
+        val player: Player = event.getPlayer()
+        val itemInMainHand = player.inventory.itemInMainHand
+
+        val customItem: CustomItem = event.getCustomItem()
+
+        player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated", NamedTextColor.GREEN))
         customItem.setIsActivated(false)
     }
 
