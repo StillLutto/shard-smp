@@ -27,13 +27,13 @@ class PoseidonTridentListener(private val shardSMP: ShardSMP) : Listener {
                     val blockType = currentBlock.type
                     val blockData = currentBlock.blockData
 
-                    if (playerLocation.distance(currentLocation) <= radius) {
-                        if (blockType == Material.WATER || blockType == Material.KELP || blockType == Material.KELP_PLANT || blockType == Material.SEAGRASS || blockType == Material.TALL_SEAGRASS) {
-                            currentBlock.type = Material.AIR
-                        } else if (blockData is Waterlogged && blockData.isWaterlogged) {
-                            blockData.isWaterlogged = false
-                            currentBlock.blockData = blockData
-                        }
+                    if (playerLocation.distance(currentLocation) > radius) continue
+
+                    if (blockType == Material.WATER || blockType == Material.KELP || blockType == Material.KELP_PLANT || blockType == Material.SEAGRASS || blockType == Material.TALL_SEAGRASS) {
+                        currentBlock.type = Material.AIR
+                    } else if (blockData is Waterlogged && blockData.isWaterlogged) {
+                        blockData.isWaterlogged = false
+                        currentBlock.blockData = blockData
                     }
                 }
             }
