@@ -1,3 +1,5 @@
+import org.gradle.api.internal.provider.MissingValueException
+
 plugins {
     java
     kotlin("jvm")
@@ -52,7 +54,11 @@ tasks.processResources {
 }
 
 tasks.withType<Jar> {
-    // customize this to your needs
-    destinationDirectory = File(providers.environmentVariable("buildPath").get())
+    try {
+        // customize this to your needs
+        destinationDirectory = File(providers.environmentVariable("buildPath").get())
+    } catch (exception: MissingValueException) {
+        return@withType
+    }
 }
 
