@@ -4,6 +4,7 @@ import me.lutto.shardsmp.commands.GiveItemCommand
 import me.lutto.shardsmp.commands.ResetCooldownCommand
 import me.lutto.shardsmp.commands.tabcompleters.GiveItemTabCompleter
 import me.lutto.shardsmp.commands.tabcompleters.ResetCooldownTabCompleter
+import me.lutto.shardsmp.instance.PyroFireGiveRunnable
 import me.lutto.shardsmp.listeners.CooldownListener
 import me.lutto.shardsmp.listeners.ShardListener
 import me.lutto.shardsmp.listeners.weapons.*
@@ -26,6 +27,7 @@ class ShardSMP : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(LifestealerListener(this), this)
         Bukkit.getPluginManager().registerEvents(MjolnirListener(this), this)
         Bukkit.getPluginManager().registerEvents(PoseidonTridentListener(this), this)
+        Bukkit.getPluginManager().registerEvents(PyroSwordListener(this), this)
         Bukkit.getPluginManager().registerEvents(TankShieldListener(this), this)
         Bukkit.getPluginManager().registerEvents(TitansEdgeListener(this), this)
 
@@ -33,6 +35,9 @@ class ShardSMP : JavaPlugin() {
         getCommand("giveitem")!!.setTabCompleter(GiveItemTabCompleter(this))
         getCommand("resetcooldown")!!.setExecutor(ResetCooldownCommand(this))
         getCommand("resetcooldown")!!.setTabCompleter(ResetCooldownTabCompleter(this))
+
+        val pyroFireGiveRunnable = PyroFireGiveRunnable(this)
+        pyroFireGiveRunnable.start()
     }
 
 }
