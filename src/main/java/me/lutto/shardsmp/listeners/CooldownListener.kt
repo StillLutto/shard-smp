@@ -116,7 +116,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
         val customItem: CustomItem = event.getCustomItem()
 
-        player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated", NamedTextColor.GREEN))
+        player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated", NamedTextColor.RED))
         customItem.setIsActivated(false)
     }
 
