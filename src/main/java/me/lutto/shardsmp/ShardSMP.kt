@@ -30,6 +30,9 @@ class ShardSMP : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(PyroSwordListener(this), this)
         Bukkit.getPluginManager().registerEvents(TankShieldListener(this), this)
         Bukkit.getPluginManager().registerEvents(TitansEdgeListener(this), this)
+        Bukkit.getPluginManager().registerEvents(VanishBladeListener(this), this)
+
+        Bukkit.getPluginManager().registerEvents(EquipmentChangeListener(this), this)
 
         getCommand("giveitem")!!.setExecutor(GiveItemCommand(this))
         getCommand("giveitem")!!.setTabCompleter(GiveItemTabCompleter(this))
