@@ -6,6 +6,7 @@ import me.lutto.shardsmp.instance.CustomItem
 import org.bukkit.*
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
+import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityShootBowEvent
@@ -41,6 +42,7 @@ class EnderBowListener(private val shardSMP: ShardSMP) : Listener {
 
         val player: Player = event.entity.shooter as Player
         val hitEntity = event.hitEntity
+        val projectile: Projectile = event.entity
 
         if (hitEntity != null) {
             val playerLocation = Location(player.world, player.location.x, player.location.y, player.location.z, hitEntity.yaw, hitEntity.pitch)
@@ -48,12 +50,12 @@ class EnderBowListener(private val shardSMP: ShardSMP) : Listener {
             val hitEntityLocation = Location(hitEntity.world, hitEntity.location.x, hitEntity.location.y, hitEntity.location.z, player.yaw, player.pitch)
             player.teleportAsync(hitEntityLocation)
         } else {
-            val playerLocation = Location(player.world, event.entity.location.x, event.entity.location.y, event.entity.location.z, player.location.yaw, player.location.pitch)
+            val playerLocation = Location(projectile.world, projectile.location.x, projectile.location.y, projectile.location.z, player.location.yaw, player.location.pitch)
             player.teleportAsync(playerLocation)
         }
 
-        event.entity.removeMetadata("ender_bow_arrow", shardSMP)
-        event.entity.remove()
+        projectile.removeMetadata("ender_bow_arrow", shardSMP)
+        projectile.remove()
         player.sendRichMessage("<green>You have been teleported!")
         player.playSound(player, Sound.ENTITY_ENDER_PEARL_THROW, 1.0f, 1.0f)
         player.spawnParticle(Particle.PORTAL, player.location, 100)
