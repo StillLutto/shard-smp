@@ -37,7 +37,6 @@ class ShardSMP : JavaPlugin() {
         getCommand("giveitem")!!.setExecutor(GiveItemCommand(this))
         getCommand("giveitem")!!.setTabCompleter(GiveItemTabCompleter(this))
         getCommand("resetcooldown")!!.setExecutor(ResetCooldownCommand(this))
-        getCommand("resetcooldown")!!.setTabCompleter(ResetCooldownTabCompleter(this))
 
         val pyroFireGiveRunnable = PyroFireGiveRunnable(this)
         pyroFireGiveRunnable.start()
