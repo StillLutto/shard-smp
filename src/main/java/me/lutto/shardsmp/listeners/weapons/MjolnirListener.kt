@@ -24,7 +24,10 @@ class MjolnirListener(private val shardSMP: ShardSMP) : Listener {
             val nearbyPlayer: Player = nearbyEntity
 
             launchPlayer(nearbyPlayer, centerRadiusLocation, 1.0)
-            nearbyPlayer.damage(3.0)
+            if (nearbyPlayer.health <= 6) {
+                nearbyPlayer.health = 0.0
+            }
+            nearbyPlayer.health -= 6
         }
     }
 

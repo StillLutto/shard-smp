@@ -118,7 +118,7 @@ class ItemManager(private val shardSMP: ShardSMP) {
                 .lore(listOf(rightClickLore))
                 .customModelData(10)
                 .rightClick(true)
-                .cooldownTime(150)
+                .cooldownTime(120)
                 .useOnActivation(true)
                 .build()
         )

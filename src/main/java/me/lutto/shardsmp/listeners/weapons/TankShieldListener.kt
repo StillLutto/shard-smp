@@ -24,15 +24,15 @@ class TankShieldListener(private val shardSMP: ShardSMP) : Listener {
         val player: Player = event.getPlayer()
         val customItem: CustomItem = event.getCustomItem()
 
-        player.addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 400, 2))
-        player.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 400, 2))
+        player.addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 2))
+        player.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 200, 2))
 
         player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = 0.02
         player.getAttribute(Attribute.GENERIC_FLYING_SPEED)?.baseValue = 0.02
 
         val actionbarWarning = Bukkit.getScheduler().runTaskTimer(shardSMP,
             Runnable {
-                player.sendActionBar(Component.text("You can't attack for 5 seconds!", NamedTextColor.RED))
+                player.sendActionBar(Component.text("You can't attack for 10 seconds!", NamedTextColor.RED))
             }, 1, 40
         )
 
@@ -41,7 +41,7 @@ class TankShieldListener(private val shardSMP: ShardSMP) : Listener {
             customItem.setIsActivated(false)
             actionbarWarning.cancel()
             player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = 0.1
-        }, 400)
+        }, 200)
     }
 
     @EventHandler

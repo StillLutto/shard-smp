@@ -13,8 +13,8 @@ class EarthShattererListener(private val shardSMP: ShardSMP) : Listener {
     fun onAbilityActivated(event: AbilityActivateEvent) {
         if (event.getCustomItem() != shardSMP.itemManager.getItem("earth_shatterer")) return
 
-        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.SPEED, 600, 1))
-        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.FAST_DIGGING, 600, 5))
+        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.SPEED, 300, 1))
+        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.FAST_DIGGING, 300, 3))
     }
 
 }

@@ -13,7 +13,7 @@ class TitansEdgeListener(private val shardSMP: ShardSMP) : Listener {
     fun onAbilityActivated(event: AbilityActivateEvent) {
         if (event.getCustomItem() != shardSMP.itemManager.getItem("titans_edge")) return
 
-        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, 100, 2))
+        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 2))
     }
 
 }
