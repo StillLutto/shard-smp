@@ -1,8 +1,11 @@
 package me.lutto.shardsmp.items
 
 import net.kyori.adventure.text.Component
+import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.ShapedRecipe
 
 open class CustomItem(
     private val id: String,
@@ -12,7 +15,8 @@ open class CustomItem(
     customModelData: Int
 ) {
 
-    private var item: ItemStack
+    protected var item: ItemStack
+    private var recipe: ShapedRecipe? = null
 
     init {
         val itemStack = ItemStack(material)
@@ -28,7 +32,13 @@ open class CustomItem(
         item = itemStack
     }
 
+    fun setRecipe(recipe: ShapedRecipe) {
+        Bukkit.getServer().addRecipe(recipe)
+        this.recipe = recipe
+    }
+
     fun getId(): String = id
     fun getItemStack(): ItemStack = item
+    fun getRecipe(): ShapedRecipe? = recipe
 
 }

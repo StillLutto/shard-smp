@@ -1,8 +1,8 @@
 package me.lutto.shardsmp.items.weapons
 
-import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -12,8 +12,14 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.RecipeChoice.ExactChoice
+import org.bukkit.inventory.ShapedRecipe
+import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffectType
+import org.bukkit.potion.PotionType
 
 class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "pyro_sword",
@@ -28,6 +34,24 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Listener {
 
     init {
+        val fireResPotion = ItemStack(Material.SPLASH_POTION)
+        val fireResPotionItemMeta = fireResPotion.itemMeta as PotionMeta
+        fireResPotionItemMeta.basePotionData = PotionData(PotionType.FIRE_RESISTANCE, true, false)
+        fireResPotion.setItemMeta(fireResPotionItemMeta)
+
+        val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
+        recipe.shape(
+            "SSS",
+            "PDP",
+            "NBN"
+        )
+        recipe.setIngredient('P', ExactChoice(fireResPotion))
+        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
+        recipe.setIngredient('B', Material.DIAMOND_BLOCK)
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
+        recipe.setIngredient('D', Material.DIAMOND_SWORD)
+        super.setRecipe(recipe)
+
         shardSMP.itemManager.registerItem(this)
     }
 

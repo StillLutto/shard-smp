@@ -1,14 +1,16 @@
 package me.lutto.shardsmp.items.weapons
 
-import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.inventory.RecipeChoice.ExactChoice
+import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.scheduler.BukkitRunnable
 
 class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
@@ -24,6 +26,19 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Listener {
 
     init {
+        val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
+        recipe.shape(
+            "SLS",
+            "TAT",
+            "SNS"
+        )
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
+        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
+        recipe.setIngredient('A', Material.NETHERITE_AXE)
+        recipe.setIngredient('T', Material.TRIDENT)
+        recipe.setIngredient('L', Material.LODESTONE)
+        super.setRecipe(recipe)
+
         shardSMP.itemManager.registerItem(this)
     }
 

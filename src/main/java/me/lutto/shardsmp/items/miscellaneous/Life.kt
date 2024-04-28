@@ -4,8 +4,10 @@ import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomItem
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
-import org.bukkit.*
+import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.event.Listener
+import org.bukkit.inventory.ShapedRecipe
 
 class Life(private val shardSMP: ShardSMP) : CustomItem(
     "life",
@@ -17,6 +19,18 @@ class Life(private val shardSMP: ShardSMP) : CustomItem(
 ), Listener {
 
     init {
+        val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
+        recipe.shape(
+            "DND",
+            "STS",
+            "DND"
+        )
+        recipe.setIngredient('T', Material.TOTEM_OF_UNDYING)
+        recipe.setIngredient('D', Material.DIAMOND_BLOCK)
+        recipe.setIngredient('S', Material.NETHERITE_SCRAP)
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
+        super.setRecipe(recipe)
+
         shardSMP.itemManager.registerItem(this)
     }
 

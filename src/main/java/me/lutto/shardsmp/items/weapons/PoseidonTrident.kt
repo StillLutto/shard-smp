@@ -1,14 +1,19 @@
 package me.lutto.shardsmp.items.weapons
 
-import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.block.data.Waterlogged
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.RecipeChoice.ExactChoice
+import org.bukkit.inventory.ShapedRecipe
+import org.bukkit.inventory.meta.EnchantmentStorageMeta
 
 class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "poseidon_trident",
@@ -23,6 +28,23 @@ class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Listener {
 
     init {
+        val riptideEnchant = ItemStack(Material.ENCHANTED_BOOK)
+        val riptideEnchantItemMeta = riptideEnchant.itemMeta as EnchantmentStorageMeta
+        riptideEnchantItemMeta.addEnchant(Enchantment.RIPTIDE, 3, false)
+        riptideEnchant.setItemMeta(riptideEnchantItemMeta)
+
+        val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
+        recipe.shape(
+            "PEP",
+            "PTP",
+            "SSS"
+        )
+        recipe.setIngredient('E', ExactChoice(riptideEnchant))
+        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
+        recipe.setIngredient('P', Material.SPONGE)
+        recipe.setIngredient('T', Material.TRIDENT)
+        super.setRecipe(recipe)
+
         shardSMP.itemManager.registerItem(this)
     }
 

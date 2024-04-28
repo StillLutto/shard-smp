@@ -1,8 +1,8 @@
 package me.lutto.shardsmp.items.weapons
 
-import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -13,9 +13,15 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.RecipeChoice.ExactChoice
+import org.bukkit.inventory.ShapedRecipe
+import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import org.bukkit.potion.PotionType
 
 class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "tank_shield",
@@ -30,6 +36,25 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Listener {
 
     init {
+        val turtleMasterPotion = ItemStack(Material.SPLASH_POTION)
+        val turtleMasterPotionMeta = turtleMasterPotion.itemMeta as PotionMeta
+        turtleMasterPotionMeta.basePotionData = PotionData(PotionType.TURTLE_MASTER, true, false)
+        turtleMasterPotion.setItemMeta(turtleMasterPotionMeta)
+
+        val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
+        recipe.shape(
+            "NEN",
+            "SHS",
+            "DTD"
+        )
+        recipe.setIngredient('H', Material.SHIELD)
+        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
+        recipe.setIngredient('T', ExactChoice(turtleMasterPotion))
+        recipe.setIngredient('E', Material.ENCHANTED_GOLDEN_APPLE)
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
+        recipe.setIngredient('D', Material.DIAMOND_BLOCK)
+        super.setRecipe(recipe)
+
         shardSMP.itemManager.registerItem(this)
     }
 

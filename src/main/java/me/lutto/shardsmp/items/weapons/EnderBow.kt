@@ -1,8 +1,8 @@
 package me.lutto.shardsmp.items.weapons
 
-import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
@@ -13,6 +13,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.event.entity.ProjectileHitEvent
+import org.bukkit.inventory.RecipeChoice.ExactChoice
+import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
@@ -30,6 +32,19 @@ class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Listener {
 
     init {
+        val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
+        recipe.shape(
+            "PSP",
+            "PBP",
+            "NAN"
+        )
+        recipe.setIngredient('P', Material.ENDER_PEARL)
+        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
+        recipe.setIngredient('B', Material.BOW)
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
+        recipe.setIngredient('A', Material.ARROW)
+        super.setRecipe(recipe)
+
         shardSMP.itemManager.registerItem(this)
     }
 

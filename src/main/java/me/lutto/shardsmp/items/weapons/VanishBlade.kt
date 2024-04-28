@@ -18,7 +18,12 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.RecipeChoice
+import org.bukkit.inventory.ShapedRecipe
+import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.potion.PotionData
+import org.bukkit.potion.PotionType
 
 class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "vanish_blade",
@@ -33,6 +38,24 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Listener {
 
     init {
+        val invisibilityPotion = ItemStack(Material.SPLASH_POTION)
+        val invisibilityPotionItemMeta = invisibilityPotion.itemMeta as PotionMeta
+        invisibilityPotionItemMeta.basePotionData = PotionData(PotionType.INVISIBILITY, true, false)
+        invisibilityPotion.setItemMeta(invisibilityPotionItemMeta)
+
+        val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
+        recipe.shape(
+            "NBN",
+            "SDS",
+            "III"
+        )
+        recipe.setIngredient('I', RecipeChoice.ExactChoice(invisibilityPotion))
+        recipe.setIngredient('S', RecipeChoice.ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
+        recipe.setIngredient('B', Material.DIAMOND_BLOCK)
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
+        recipe.setIngredient('D', Material.DIAMOND_SWORD)
+        super.setRecipe(recipe)
+
         shardSMP.itemManager.registerItem(this)
     }
 
