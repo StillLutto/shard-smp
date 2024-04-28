@@ -1,8 +1,10 @@
-package me.lutto.shardsmp.listeners.weapons
+package me.lutto.shardsmp.items.weapons
 
-import me.lutto.shardsmp.AbilityActivateEvent
+import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
-import me.lutto.shardsmp.instance.CustomItem
+import me.lutto.shardsmp.items.CustomCooldownItem
+import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
@@ -15,7 +17,21 @@ import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
-class EnderBowListener(private val shardSMP: ShardSMP) : Listener {
+class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
+    "ender_bow",
+    Material.BOW,
+    MiniMessage.miniMessage().deserialize("<gradient:#8e1daa:#4b14aa>Ender Bow").decoration(TextDecoration.ITALIC, false)
+        .decoration(TextDecoration.ITALIC, false),
+    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
+    3,
+    false,
+    30,
+    false
+), Listener {
+
+    init {
+        shardSMP.itemManager.registerItem(this)
+    }
 
     @EventHandler
     fun onEntityShootBow(event: EntityShootBowEvent) {
@@ -25,7 +41,7 @@ class EnderBowListener(private val shardSMP: ShardSMP) : Listener {
         val bow = event.bow ?: return
         if (bow.itemMeta?.persistentDataContainer?.get(customItemKey, PersistentDataType.STRING) != "ender_bow") return
 
-        val customItem: CustomItem = shardSMP.itemManager.getItem("ender_bow") ?: return
+        val customItem: CustomCooldownItem = shardSMP.itemManager.getCooldownItem("ender_bow") ?: return
         val itemUUID: UUID = UUID.fromString(bow.itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "uuid"), PersistentDataType.STRING] ?: return)
         if (!customItem.isActivated()) return
         if (shardSMP.itemManager.getItemCooldown()["ender_bow"]!!.asMap().containsKey(itemUUID)) return

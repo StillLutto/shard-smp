@@ -26,11 +26,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
     init {
         for (customItem in shardSMP.itemManager.getItemList()) {
-            if (customItem !is CustomCooldownItem) {
-                println(customItem.getId() + " is not a customcooldownitemn")
-                continue
-            }
-            println(customItem.getId() + " ,${customItem.getCooldownTime()}, child!")
+            if (customItem !is CustomCooldownItem) continue
             shardSMP.itemManager.setItemCooldown(customItem.getId(), CacheBuilder.newBuilder().expireAfterWrite(customItem.getCooldownTime().toLong(), TimeUnit.SECONDS).build())
         }
     }
@@ -64,9 +60,9 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         }
 
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING] ?: return)
-        val currentItemCooldown = shardSMP.itemManager.getItemCooldown()[itemId] ?: return
-        if (currentItemCooldown.asMap().containsKey(itemUUID)) {
-            val durationLeft: Long = (currentItemCooldown.asMap()[itemUUID] ?: return) - System.currentTimeMillis()
+        val itemCooldown = shardSMP.itemManager.getItemCooldown()[itemId] ?: return
+        if (itemCooldown.asMap().containsKey(itemUUID)) {
+            val durationLeft: Long = (itemCooldown.asMap()[itemUUID] ?: return) - System.currentTimeMillis()
             if (TimeUnit.MILLISECONDS.toMinutes(durationLeft) >= 2) {
                 player.sendActionBar(
                     MiniMessage.miniMessage().deserialize(

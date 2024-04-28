@@ -3,11 +3,11 @@ package me.lutto.shardsmp
 import me.lutto.shardsmp.commands.GiveItemCommand
 import me.lutto.shardsmp.commands.ResetCooldownCommand
 import me.lutto.shardsmp.commands.tabcompleters.GiveItemTabCompleter
-import me.lutto.shardsmp.commands.tabcompleters.ResetCooldownTabCompleter
 import me.lutto.shardsmp.instance.PyroFireGiveRunnable
+import me.lutto.shardsmp.items.miscellaneous.Life
+import me.lutto.shardsmp.items.miscellaneous.Shard
+import me.lutto.shardsmp.items.weapons.*
 import me.lutto.shardsmp.listeners.CooldownListener
-import me.lutto.shardsmp.listeners.ShardListener
-import me.lutto.shardsmp.listeners.weapons.*
 import me.lutto.shardsmp.manager.ItemManager
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -19,20 +19,19 @@ class ShardSMP : JavaPlugin() {
     override fun onEnable() {
         itemManager = ItemManager(this)
 
-        Bukkit.getPluginManager().registerEvents(ShardListener(this), this)
-        Bukkit.getPluginManager().registerEvents(CooldownListener(this), this)
+        Bukkit.getPluginManager().registerEvents(Shard(this), this)
+        Bukkit.getPluginManager().registerEvents(Life(this), this)
+        Bukkit.getPluginManager().registerEvents(EarthShatterer(this), this)
+        Bukkit.getPluginManager().registerEvents(EnderBow(this), this)
+        Bukkit.getPluginManager().registerEvents(Lifestealer(this), this)
+        Bukkit.getPluginManager().registerEvents(Mjolnir(this), this)
+        Bukkit.getPluginManager().registerEvents(PoseidonTrident(this), this)
+        Bukkit.getPluginManager().registerEvents(PyroSword(this), this)
+        Bukkit.getPluginManager().registerEvents(TankShield(this), this)
+        Bukkit.getPluginManager().registerEvents(TitansEdge(this), this)
+        Bukkit.getPluginManager().registerEvents(VanishBlade(this), this)
 
-        Bukkit.getPluginManager().registerEvents(EarthShattererListener(this), this)
-        Bukkit.getPluginManager().registerEvents(EnderBowListener(this), this)
-        Bukkit.getPluginManager().registerEvents(LifestealerListener(this), this)
-        Bukkit.getPluginManager().registerEvents(MjolnirListener(this), this)
-        Bukkit.getPluginManager().registerEvents(PoseidonTridentListener(this), this)
-        Bukkit.getPluginManager().registerEvents(PyroSwordListener(this), this)
-        Bukkit.getPluginManager().registerEvents(TankShieldListener(this), this)
-        Bukkit.getPluginManager().registerEvents(TitansEdgeListener(this), this)
-        Bukkit.getPluginManager().registerEvents(VanishBladeListener(this), this)
-
-        Bukkit.getPluginManager().registerEvents(EquipmentChangeListener(this), this)
+        Bukkit.getPluginManager().registerEvents(CooldownListener(this), this) // always has to be after custom items
 
         getCommand("giveitem")!!.setExecutor(GiveItemCommand(this))
         getCommand("giveitem")!!.setTabCompleter(GiveItemTabCompleter(this))

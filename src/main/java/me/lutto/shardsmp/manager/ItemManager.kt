@@ -33,7 +33,7 @@ class ItemManager(private val shardSMP: ShardSMP) {
 
     fun getCooldownItem(id: String): CustomCooldownItem? {
         for (customItem in itemList) {
-            if (customItem !is CustomCooldownItem) return null
+            if (customItem !is CustomCooldownItem) continue
             if (customItem.getId() == id) return customItem
         }
         return null
