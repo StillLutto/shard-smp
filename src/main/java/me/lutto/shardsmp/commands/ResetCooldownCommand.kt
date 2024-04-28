@@ -1,7 +1,6 @@
 package me.lutto.shardsmp.commands
 
 import me.lutto.shardsmp.ShardSMP
-import me.lutto.shardsmp.instance.CustomItem
 import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
