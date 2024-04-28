@@ -1,14 +1,28 @@
-package me.lutto.shardsmp.listeners
+package me.lutto.shardsmp.items.miscellaneous
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.items.CustomItem
+import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.*
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 
+class Shard(private val shardSMP: ShardSMP) : CustomItem(
+    "shard",
+    Material.ECHO_SHARD,
+    MiniMessage.miniMessage().deserialize("<dark_purple>Shard").decoration(TextDecoration.ITALIC, false)
+        .decoration(TextDecoration.ITALIC, false),
+    listOf(),
+    1
+), Listener {
 
-class ShardListener(private val shardSMP: ShardSMP) : Listener {
+    init {
+        shardSMP.itemManager.registerItem(this)
+    }
 
     @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {

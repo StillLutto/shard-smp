@@ -1,16 +1,46 @@
-package me.lutto.shardsmp.listeners.weapons
+package me.lutto.shardsmp.items.weapons
 
-import me.lutto.shardsmp.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.events.AbilityActivateEvent
+import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
-import org.bukkit.entity.EntityType
-import org.bukkit.entity.ItemDisplay
-import org.bukkit.entity.Player
+import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.inventory.RecipeChoice.ExactChoice
+import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.scheduler.BukkitRunnable
 
-class MjolnirListener(private val shardSMP: ShardSMP) : Listener {
+class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
+    "mjolnir",
+    Material.NETHERITE_AXE,
+    MiniMessage.miniMessage().deserialize("<gradient:#3a4261:#7277a6>Mjölnir")
+        .decoration(TextDecoration.ITALIC, false),
+    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    6,
+    true,
+    120,
+    true
+), Listener {
+
+    init {
+        val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
+        recipe.shape(
+            "SLS",
+            "TAT",
+            "SNS"
+        )
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
+        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
+        recipe.setIngredient('A', Material.NETHERITE_AXE)
+        recipe.setIngredient('T', Material.TRIDENT)
+        recipe.setIngredient('L', Material.LODESTONE)
+        super.setRecipe(recipe)
+
+        shardSMP.itemManager.registerItem(this)
+    }
 
     private fun launchPlayer(player: Player, launchLocation: Location, launchPower: Double) {
         val direction = player.location.toVector().subtract(launchLocation.toVector()).normalize()
@@ -24,13 +54,16 @@ class MjolnirListener(private val shardSMP: ShardSMP) : Listener {
             val nearbyPlayer: Player = nearbyEntity
 
             launchPlayer(nearbyPlayer, centerRadiusLocation, 1.0)
-            nearbyPlayer.damage(3.0)
+            if (nearbyPlayer.health <= 6) {
+                nearbyPlayer.health = 0.0
+            }
+            nearbyPlayer.health -= 6
         }
     }
 
     @EventHandler
     fun onAbilityActivated(event: AbilityActivateEvent) {
-        if (event.getCustomItem() != shardSMP.itemManager.getItem("mjolnir")) return
+        if (event.getItem() != shardSMP.itemManager.getItem("mjolnir")) return
         val player: Player = event.getPlayer()
         val world = player.world
 

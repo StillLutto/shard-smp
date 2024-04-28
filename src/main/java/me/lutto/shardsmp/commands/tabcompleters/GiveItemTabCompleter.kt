@@ -1,7 +1,7 @@
 package me.lutto.shardsmp.commands.tabcompleters
 
 import me.lutto.shardsmp.ShardSMP
-import me.lutto.shardsmp.instance.CustomItem
+import me.lutto.shardsmp.items.CustomItem
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
