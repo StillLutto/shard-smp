@@ -9,3 +9,6 @@ commands:
   resetcooldown:
     description: Reset item cooldowns!
     default: op
+  upgradeItem:
+    description: Upgrade upgradable weapons!
+    default: op
