@@ -86,7 +86,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
             return customItem.setIsActivated(true)
         }
 
-        Bukkit.getPluginManager().callEvent(AbilityActivateEvent(player, customItem))
+        Bukkit.getPluginManager().callEvent(AbilityActivateEvent(player, customItem, itemUUID))
     }
 
     @EventHandler
