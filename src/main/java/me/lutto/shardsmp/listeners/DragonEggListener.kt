@@ -19,12 +19,10 @@ class DragonEggListener(private val shardSMP: ShardSMP) : Listener {
     fun onPrepareItemCraft(event: PrepareItemCraftEvent) {
         if (event.inventory.holder !is Player) return
         if (!event.inventory.matrix.contains(ItemStack(Material.DRAGON_EGG))) return
-        val player: Player = event.inventory.holder as Player
 
         var weapon: ItemStack? = null
         for (customItem in shardSMP.itemManager.getItemList()) {
             if (customItem !is Upgradable) continue
-            player.sendMessage("upgradable")
             for (currentItem in event.inventory.matrix) {
                 if (currentItem == null) continue
                 val currentItemId = currentItem.itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "custom_item"), PersistentDataType.STRING]
