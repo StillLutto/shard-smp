@@ -2,6 +2,7 @@ package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -25,7 +26,9 @@ class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
     false,
     180,
     true
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 120
 
     init {
         val riptideEnchant = ItemStack(Material.ENCHANTED_BOOK)

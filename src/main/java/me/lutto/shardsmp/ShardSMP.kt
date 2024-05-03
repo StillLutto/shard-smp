@@ -4,7 +4,7 @@ import me.lutto.shardsmp.commands.GiveItemCommand
 import me.lutto.shardsmp.commands.ResetCooldownCommand
 import me.lutto.shardsmp.commands.UpgradeItemCommand
 import me.lutto.shardsmp.commands.tabcompleters.GiveItemTabCompleter
-import me.lutto.shardsmp.instance.PyroFireGiveRunnable
+import me.lutto.shardsmp.instance.*
 import me.lutto.shardsmp.items.miscellaneous.Life
 import me.lutto.shardsmp.items.miscellaneous.Shard
 import me.lutto.shardsmp.items.weapons.*
@@ -43,7 +43,15 @@ class ShardSMP : JavaPlugin() {
         getCommand("upgradeitem")!!.setExecutor(UpgradeItemCommand(this))
 
         val pyroFireGiveRunnable = PyroFireGiveRunnable(this)
+        val lifestealerHealthBoostRunnable = LifestealerHealthBoostRunnable(this)
+        val poseidonWaterBreathingRunnable = PoseidonWaterBreathingRunnable(this)
+        val titansEdgeStrengthRunnable = TitansEdgeStrengthRunnable(this)
+        val vanishBladeInvisibilityRunnable = VanishBladeInvisibilityRunnable(this)
         pyroFireGiveRunnable.start()
+        lifestealerHealthBoostRunnable.start()
+        poseidonWaterBreathingRunnable.start()
+        titansEdgeStrengthRunnable.start()
+        vanishBladeInvisibilityRunnable.start()
     }
 
 }

@@ -5,6 +5,7 @@ import io.netty.channel.*
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.Upgradable
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket
@@ -35,7 +36,9 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
     true,
     150,
     true
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 90
 
     init {
         val invisibilityPotion = ItemStack(Material.SPLASH_POTION)

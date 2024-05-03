@@ -2,6 +2,7 @@ package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -12,6 +13,7 @@ import org.bukkit.event.Listener
 import org.bukkit.inventory.RecipeChoice.ExactChoice
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.scheduler.BukkitRunnable
+import java.util.UUID
 
 class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "mjolnir",
@@ -23,7 +25,9 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
     true,
     120,
     true
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 90
 
     init {
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
@@ -48,12 +52,20 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
         player.velocity = launchVelocity
     }
 
-    fun hitNearbyEntities(world: World, centerRadiusLocation: Location) {
+    fun hitNearbyEntities(itemUUID: UUID, centerRadiusLocation: Location) {
+        val world: World = centerRadiusLocation.world
         for (nearbyEntity in world.getNearbyEntities(centerRadiusLocation, 5.0, 5.0, 5.0)) {
             if (nearbyEntity !is Player) continue
             val nearbyPlayer: Player = nearbyEntity
 
             launchPlayer(nearbyPlayer, centerRadiusLocation, 1.0)
+            if (shardSMP.itemManager.isUpgraded(itemUUID)) {
+                if (nearbyPlayer.health <= 10) {
+                    nearbyPlayer.health = 0.0
+                }
+                nearbyPlayer.health -= 10
+                return
+            }
             if (nearbyPlayer.health <= 6) {
                 nearbyPlayer.health = 0.0
             }
@@ -87,7 +99,7 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
                     val blockHitLocation = thrownMjolnir.location
                     world.playSound(blockHitLocation, Sound.ENTITY_GENERIC_EXPLODE, 1f, 1f)
                     world.spawnParticle(Particle.EXPLOSION_HUGE, blockHitLocation, 1)
-                    hitNearbyEntities(world, blockHitLocation)
+                    hitNearbyEntities(event.getItemUUID(), blockHitLocation)
 
                     return
                 }
@@ -99,7 +111,7 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
                         world.playSound(thrownMjolnir.location, Sound.ENTITY_GENERIC_EXPLODE, 1f, 1f)
                         world.spawnParticle(Particle.EXPLOSION_HUGE, thrownMjolnir.location, 1)
-                        hitNearbyEntities(world, thrownMjolnir.location)
+                        hitNearbyEntities(event.getItemUUID(), thrownMjolnir.location)
                         return
                     }
                 }

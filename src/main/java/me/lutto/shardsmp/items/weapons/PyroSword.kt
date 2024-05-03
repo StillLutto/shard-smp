@@ -2,12 +2,15 @@ package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
-import org.bukkit.*
+import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -18,8 +21,11 @@ import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionData
+import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
+import java.util.*
+
 
 class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "pyro_sword",
@@ -31,7 +37,9 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
     true,
     240,
     false
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 120
 
     init {
         val fireResPotion = ItemStack(Material.SPLASH_POTION)
@@ -75,8 +83,21 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         damagee.removePotionEffect(PotionEffectType.FIRE_RESISTANCE)
         damagee.sendActionBar(Component.text("Fire Removed!", NamedTextColor.RED))
+        val firePotionDuration = damagee.getPotionEffect(PotionEffectType.FIRE_RESISTANCE)!!.duration
 
-        Bukkit.getPluginManager().callEvent(AbilityActivateEvent(event.damager as Player,shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return))
+        val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+        Bukkit.getPluginManager().callEvent(AbilityActivateEvent(event.damager as Player,shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return, itemUUID))
+
+        if (shardSMP.itemManager.isUpgraded(itemUUID)) {
+            Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
+                damagee.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE,(firePotionDuration - 100), 0, true, true, true))
+            }, 400)
+            return
+        }
+
+        Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
+            damagee.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE,(firePotionDuration - 100), 0, true, true, true))
+        }, 1200)
     }
 
 }
