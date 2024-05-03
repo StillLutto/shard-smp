@@ -47,6 +47,7 @@ class DragonEggListener(private val shardSMP: ShardSMP) : Listener {
     @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {
         for (item in event.drops) {
+            if (item.isEmpty) continue
             val customItemKey = NamespacedKey(shardSMP, "custom_item")
             val uuidKey = NamespacedKey(shardSMP, "uuid")
 
@@ -57,8 +58,8 @@ class DragonEggListener(private val shardSMP: ShardSMP) : Listener {
             val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
             if (!shardSMP.itemManager.isUpgraded(itemUUID)) continue
 
-            item.type = Material.AIR // This resets all item data
-            item.type = Material.DRAGON_EGG
+            shardSMP.itemManager.setUpgraded(itemUUID, false)
+            event.drops.add(ItemStack(Material.DRAGON_EGG))
         }
     }
 
