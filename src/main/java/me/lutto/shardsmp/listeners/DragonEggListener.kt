@@ -7,6 +7,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.PrepareItemCraftEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
@@ -41,6 +42,24 @@ class DragonEggListener(private val shardSMP: ShardSMP) : Listener {
 
         shardSMP.itemManager.setUpgraded(weaponUUID, true)
         event.inventory.result = weapon
+    }
+
+    @EventHandler
+    fun onPlayerDeath(event: PlayerDeathEvent) {
+        for (item in event.drops) {
+            val customItemKey = NamespacedKey(shardSMP, "custom_item")
+            val uuidKey = NamespacedKey(shardSMP, "uuid")
+
+            if (item.isEmpty) continue
+            if (!item.itemMeta.persistentDataContainer.has(customItemKey)) continue
+            if (!item.itemMeta.persistentDataContainer.has(uuidKey)) continue
+
+            val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+            if (!shardSMP.itemManager.isUpgraded(itemUUID)) continue
+
+            item.type = Material.AIR // This resets all item data
+            item.type = Material.DRAGON_EGG
+        }
     }
 
 }
