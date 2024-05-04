@@ -82,9 +82,9 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         val damagee = event.entity as Player
         if (damagee.isDead) return
 
+        val firePotionDuration = (damagee.getPotionEffect(PotionEffectType.FIRE_RESISTANCE) ?: return).duration
         damagee.removePotionEffect(PotionEffectType.FIRE_RESISTANCE)
         damagee.sendActionBar(Component.text("Fire Removed!", NamedTextColor.RED))
-        val firePotionDuration = damagee.getPotionEffect(PotionEffectType.FIRE_RESISTANCE)!!.duration
 
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
         Bukkit.getPluginManager().callEvent(AbilityActivateEvent(event.damager as Player,shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return, itemUUID))
@@ -92,13 +92,13 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         if (shardSMP.itemManager.isUpgraded(itemUUID)) {
             Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
                 damagee.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE,(firePotionDuration - 100), 0, true, true, true))
-            }, 400)
+            }, 1200)
             return
         }
 
         Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
             damagee.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE,(firePotionDuration - 100), 0, true, true, true))
-        }, 1200)
+        }, 400)
     }
 
 }
