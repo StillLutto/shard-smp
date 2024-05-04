@@ -31,6 +31,7 @@ class TitansEdge(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 90
+    override fun getUpgradedCustomModelData(): Int = 12
 
     init {
         val strengthPotion = ItemStack(Material.LINGERING_POTION)

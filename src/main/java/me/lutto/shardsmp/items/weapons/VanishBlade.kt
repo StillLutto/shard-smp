@@ -39,6 +39,7 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 90
+    override fun getUpgradedCustomModelData(): Int = 14
 
     init {
         val invisibilityPotion = ItemStack(Material.SPLASH_POTION)

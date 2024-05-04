@@ -39,6 +39,7 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 90
+    override fun getUpgradedCustomModelData(): Int = 8
 
     init {
         val turtleMasterPotion = ItemStack(Material.SPLASH_POTION)

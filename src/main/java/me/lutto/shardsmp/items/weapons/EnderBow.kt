@@ -33,6 +33,7 @@ class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 15
+    override fun getUpgradedCustomModelData(): Int = 3
 
     init {
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)

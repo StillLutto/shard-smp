@@ -3,6 +3,7 @@ package me.lutto.shardsmp.commands
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomItem
 import me.lutto.shardsmp.items.Upgradable
+import me.lutto.shardsmp.items.events.ItemUpgradeEvent
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
@@ -55,6 +56,7 @@ class UpgradeItemCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             sender.sendRichMessage("<green>This item is not upgraded anymore!")
         } else {
             shardSMP.itemManager.setUpgraded(itemUUID, true)
+            Bukkit.getPluginManager().callEvent(ItemUpgradeEvent(itemInMainHand, customItem, itemUUID))
             sender.sendRichMessage("<green>This item has been upgraded!")
         }
         return true

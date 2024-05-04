@@ -1,7 +1,10 @@
 package me.lutto.shardsmp.listeners
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.items.CustomItem
 import me.lutto.shardsmp.items.Upgradable
+import me.lutto.shardsmp.items.events.ItemUpgradeEvent
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
@@ -42,6 +45,8 @@ class DragonEggListener(private val shardSMP: ShardSMP) : Listener {
 
         shardSMP.itemManager.setUpgraded(weaponUUID, true)
         event.inventory.result = weapon
+        val customItem: CustomItem = shardSMP.itemManager.getItem(weapon.itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "custom_item"), PersistentDataType.STRING] ?: return) ?: return
+        Bukkit.getPluginManager().callEvent(ItemUpgradeEvent(weapon, customItem, weaponUUID))
     }
 
     @EventHandler

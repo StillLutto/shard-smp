@@ -29,6 +29,7 @@ class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 0
+    override fun getUpgradedCustomModelData(): Int = 13
 
     init {
         val turtleMasterPotion = ItemStack(Material.SPLASH_POTION)

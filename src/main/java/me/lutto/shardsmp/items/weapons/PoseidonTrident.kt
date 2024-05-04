@@ -29,6 +29,7 @@ class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 120
+    override fun getUpgradedCustomModelData(): Int = 11
 
     init {
         val riptideEnchant = ItemStack(Material.ENCHANTED_BOOK)

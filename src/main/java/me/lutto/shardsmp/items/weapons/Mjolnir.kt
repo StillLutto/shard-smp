@@ -28,6 +28,7 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 90
+    override fun getUpgradedCustomModelData(): Int = 6
 
     init {
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)

@@ -32,6 +32,10 @@ class EarthShatterer(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 120
+    override fun getUpgradedCustomModelData(): Int {
+        item.itemMeta.setCustomModelData(10)
+        return 7
+    }
 
     init {
         val speedPotion = ItemStack(Material.SPLASH_POTION)

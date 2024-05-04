@@ -1,5 +1,6 @@
 package me.lutto.shardsmp.items
 
-fun interface Upgradable {
+interface Upgradable {
     fun getUpgradedCooldownTime(): Int
+    fun getUpgradedCustomModelData(): Int
 }
