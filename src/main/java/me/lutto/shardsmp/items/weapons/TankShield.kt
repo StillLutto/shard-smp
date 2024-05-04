@@ -1,7 +1,9 @@
 package me.lutto.shardsmp.items.weapons
 
+import io.papermc.paper.event.player.PlayerItemCooldownEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -22,6 +24,7 @@ import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
+import java.util.*
 
 class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "tank_shield",
@@ -33,7 +36,10 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     false,
     120,
     true
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 90
+    override fun getUpgradedCustomModelData(): Int = 8
 
     init {
         val turtleMasterPotion = ItemStack(Material.SPLASH_POTION)
@@ -102,6 +108,31 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
             event.isCancelled = true
         }
+    }
+
+    @EventHandler
+    fun onPlayerShieldDisable(event: PlayerItemCooldownEvent) {
+        if (event.type != Material.SHIELD) return
+        val player: Player = event.player
+        var item: ItemStack = player.inventory.itemInMainHand
+        if (item.isEmpty) {
+            item = player.inventory.itemInOffHand
+        }
+
+        val customItemKey = NamespacedKey(shardSMP, "custom_item")
+        val uuidKey = NamespacedKey(shardSMP, "uuid")
+
+        if (item.itemMeta == null) return
+        if (!item.itemMeta.persistentDataContainer.has(customItemKey) || !item.itemMeta.persistentDataContainer.has(uuidKey)) return
+        if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "tank_shield") return
+
+        val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+        if (shardSMP.itemManager.isUpgraded(itemUUID)) {
+            event.cooldown = 75
+        } else {
+            event.cooldown = 50
+        }
+
     }
 
 }

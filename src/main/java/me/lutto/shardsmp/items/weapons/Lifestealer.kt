@@ -2,6 +2,7 @@ package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomItem
+import me.lutto.shardsmp.items.Upgradable
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
@@ -25,7 +26,10 @@ class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
         .decoration(TextDecoration.ITALIC, false),
     listOf(),
     9
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 0
+    override fun getUpgradedCustomModelData(): Int = 13
 
     init {
         val turtleMasterPotion = ItemStack(Material.SPLASH_POTION)
@@ -55,9 +59,15 @@ class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
 
         val itemInMainHand = player.inventory.itemInMainHand
         val customItemKey = NamespacedKey(shardSMP, "custom_item")
+        val uuidKey = NamespacedKey(shardSMP, "uuid")
         if (itemInMainHand.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "lifestealer") return
 
-        val chance = Random().nextInt(4) == 0
+        val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+        var chance = Random().nextInt(4) == 0
+        if (shardSMP.itemManager.isUpgraded(itemUUID)) {
+            chance = Random().nextInt(3) == 0
+        }
+
         if (!chance) return
 
         if (player.health + event.finalDamage > 20) {

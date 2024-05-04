@@ -2,12 +2,15 @@ package me.lutto.shardsmp
 
 import me.lutto.shardsmp.commands.GiveItemCommand
 import me.lutto.shardsmp.commands.ResetCooldownCommand
+import me.lutto.shardsmp.commands.UpgradeItemCommand
 import me.lutto.shardsmp.commands.tabcompleters.GiveItemTabCompleter
-import me.lutto.shardsmp.instance.PyroFireGiveRunnable
+import me.lutto.shardsmp.instance.*
 import me.lutto.shardsmp.items.miscellaneous.Life
 import me.lutto.shardsmp.items.miscellaneous.Shard
 import me.lutto.shardsmp.items.weapons.*
 import me.lutto.shardsmp.listeners.CooldownListener
+import me.lutto.shardsmp.listeners.DragonEggListener
+import me.lutto.shardsmp.listeners.ItemUpgradeListener
 import me.lutto.shardsmp.manager.ItemManager
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -18,6 +21,9 @@ class ShardSMP : JavaPlugin() {
 
     override fun onEnable() {
         itemManager = ItemManager(this)
+
+        Bukkit.getPluginManager().registerEvents(DragonEggListener(this), this)
+        Bukkit.getPluginManager().registerEvents(ItemUpgradeListener(this), this)
 
         Bukkit.getPluginManager().registerEvents(Shard(this), this)
         Bukkit.getPluginManager().registerEvents(Life(this), this)
@@ -36,9 +42,20 @@ class ShardSMP : JavaPlugin() {
         getCommand("giveitem")!!.setExecutor(GiveItemCommand(this))
         getCommand("giveitem")!!.setTabCompleter(GiveItemTabCompleter(this))
         getCommand("resetcooldown")!!.setExecutor(ResetCooldownCommand(this))
+        getCommand("upgradeitem")!!.setExecutor(UpgradeItemCommand(this))
 
         val pyroFireGiveRunnable = PyroFireGiveRunnable(this)
+        val lifestealerHealthBoostRunnable = LifestealerHealthBoostRunnable(this)
+        val poseidonWaterBreathingRunnable = PoseidonWaterBreathingRunnable(this)
+        val tankShieldResistanceRunnable = TankShieldResistanceRunnable(this)
+        val titansEdgeStrengthRunnable = TitansEdgeStrengthRunnable(this)
+        val vanishBladeInvisibilityRunnable = VanishBladeInvisibilityRunnable(this)
         pyroFireGiveRunnable.start()
+        lifestealerHealthBoostRunnable.start()
+        poseidonWaterBreathingRunnable.start()
+        tankShieldResistanceRunnable.start()
+        titansEdgeStrengthRunnable.start()
+        vanishBladeInvisibilityRunnable.start()
     }
 
 }

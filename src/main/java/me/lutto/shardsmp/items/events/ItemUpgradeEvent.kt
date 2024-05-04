@@ -1,12 +1,13 @@
 package me.lutto.shardsmp.items.events
 
 import me.lutto.shardsmp.items.CustomCooldownItem
-import org.bukkit.entity.Player
+import me.lutto.shardsmp.items.CustomItem
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
+import org.bukkit.inventory.ItemStack
 import java.util.UUID
 
-class AbilityActivateEvent(private val player: Player, private val customItem: CustomCooldownItem, private val itemUUID: UUID) : Event() {
+class ItemUpgradeEvent(private val item: ItemStack, private val customItem: CustomItem, private val itemUUID: UUID) : Event() {
 
     companion object {
         val HANDLERS = HandlerList()
@@ -21,8 +22,8 @@ class AbilityActivateEvent(private val player: Player, private val customItem: C
         return HANDLERS
     }
 
-    fun getPlayer(): Player = player
-    fun getItem(): CustomCooldownItem = customItem
+    fun getItem(): ItemStack = item
+    fun getCustomItem(): CustomItem = customItem
     fun getItemUUID(): UUID = itemUUID
 
 }

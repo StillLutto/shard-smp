@@ -5,14 +5,37 @@ import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.CustomItem
 import org.bukkit.NamespacedKey
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.persistence.PersistentDataType
+import java.io.File
+import java.io.IOException
 import java.util.*
 
 class ItemManager(private val shardSMP: ShardSMP) {
 
     private var itemList: MutableList<CustomItem> = mutableListOf()
-
     private val itemCooldown: MutableMap<String, Cache<UUID, Long>> = mutableMapOf()
+    private val upgradedItems: MutableMap<UUID, Boolean> = mutableMapOf()
+
+    private var upgradedItemsFile: File
+    private var upgradedItemsConfig: YamlConfiguration
+
+    init {
+        if (!shardSMP.dataFolder.exists()) {
+            shardSMP.dataFolder.mkdir()
+        }
+
+        upgradedItemsFile = File(shardSMP.dataFolder, "upgradedItems.yml")
+        if (!upgradedItemsFile.exists()) {
+            try {
+                upgradedItemsFile.createNewFile()
+            } catch (e: IOException) {
+                throw RuntimeException(e)
+            }
+        }
+
+        upgradedItemsConfig = YamlConfiguration.loadConfiguration(upgradedItemsFile)
+    }
 
     fun registerItem(customItem: CustomItem) {
         val item = customItem.getItemStack()
@@ -47,6 +70,20 @@ class ItemManager(private val shardSMP: ShardSMP) {
         (itemCooldown[id] ?: return).invalidate(uuid)
         (shardSMP.itemManager.getCooldownItem(id) ?: return).setIsActivated(false)
     }
+
+    fun setUpgraded(uuid: UUID, upgraded: Boolean) {
+        if (upgradedItemsConfig.contains(uuid.toString())) return
+
+        upgradedItemsConfig[uuid.toString()] = upgraded
+        try {
+            upgradedItemsConfig.save(upgradedItemsFile)
+        } catch (e: IOException) {
+            throw java.lang.RuntimeException(e)
+        }
+        upgradedItems.containsKey(uuid)
+    }
+
+    fun isUpgraded(uuid: UUID): Boolean = upgradedItemsConfig.getBoolean(uuid.toString())
 
     fun getItemList(): MutableList<CustomItem> = itemList
     fun getItemCooldown(): Map<String, Cache<UUID, Long>> = itemCooldown

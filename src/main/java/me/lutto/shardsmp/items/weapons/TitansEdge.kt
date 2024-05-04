@@ -2,6 +2,7 @@ package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -27,7 +28,10 @@ class TitansEdge(private val shardSMP: ShardSMP) : CustomCooldownItem(
     true,
     120,
     true
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 90
+    override fun getUpgradedCustomModelData(): Int = 12
 
     init {
         val strengthPotion = ItemStack(Material.LINGERING_POTION)

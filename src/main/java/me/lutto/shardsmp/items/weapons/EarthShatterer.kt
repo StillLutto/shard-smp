@@ -2,6 +2,7 @@ package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -28,7 +29,13 @@ class EarthShatterer(private val shardSMP: ShardSMP) : CustomCooldownItem(
     true,
     120,
     true
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 120
+    override fun getUpgradedCustomModelData(): Int {
+        item.itemMeta.setCustomModelData(10)
+        return 7
+    }
 
     init {
         val speedPotion = ItemStack(Material.SPLASH_POTION)
@@ -51,12 +58,20 @@ class EarthShatterer(private val shardSMP: ShardSMP) : CustomCooldownItem(
         shardSMP.itemManager.registerItem(this)
     }
 
+    private fun ability(event: AbilityActivateEvent) {
+        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.SPEED, 300, 1))
+        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.FAST_DIGGING, 300, 2))
+    }
+
+    private fun upgradedAbility(event: AbilityActivateEvent) {
+        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.SPEED, 300, 1))
+        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.FAST_DIGGING, 300, 3))
+    }
+
     @EventHandler
     private fun onAbilityActivated(event: AbilityActivateEvent) {
         if (event.getItem() != shardSMP.itemManager.getCooldownItem("earth_shatterer")) return
-
-        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.SPEED, 300, 1))
-        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.FAST_DIGGING, 300, 3))
+        if (shardSMP.itemManager.isUpgraded(event.getItemUUID())) upgradedAbility(event) else ability(event)
     }
 
 }

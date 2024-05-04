@@ -2,6 +2,7 @@ package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
+import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -29,7 +30,10 @@ class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
     false,
     30,
     false
-), Listener {
+), Upgradable, Listener {
+
+    override fun getUpgradedCooldownTime(): Int = 15
+    override fun getUpgradedCustomModelData(): Int = 3
 
     init {
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
@@ -63,7 +67,7 @@ class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val projectile = event.projectile
         projectile.setMetadata("ender_bow_arrow", FixedMetadataValue(shardSMP, true))
-        Bukkit.getPluginManager().callEvent(AbilityActivateEvent((event.entity as Player), customItem))
+        Bukkit.getPluginManager().callEvent(AbilityActivateEvent((event.entity as Player), customItem, itemUUID))
     }
 
     @EventHandler
