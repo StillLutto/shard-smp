@@ -12,3 +12,6 @@ commands:
   upgradeItem:
     description: Upgrade upgradable weapons!
     default: op
+  lives:
+    description: Manage lives with this command!
+    default: op
