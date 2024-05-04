@@ -15,3 +15,6 @@ commands:
   lives:
     description: Manage lives with this command!
     default: op
+  donate:
+    description: Donate your lives with this!
+    default: op

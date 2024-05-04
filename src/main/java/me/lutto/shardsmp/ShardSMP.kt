@@ -1,9 +1,6 @@
 package me.lutto.shardsmp
 
-import me.lutto.shardsmp.commands.GiveItemCommand
-import me.lutto.shardsmp.commands.LivesCommand
-import me.lutto.shardsmp.commands.ResetCooldownCommand
-import me.lutto.shardsmp.commands.UpgradeItemCommand
+import me.lutto.shardsmp.commands.*
 import me.lutto.shardsmp.commands.tabcompleters.GiveItemTabCompleter
 import me.lutto.shardsmp.commands.tabcompleters.LivesTabCompleter
 import me.lutto.shardsmp.instance.*
@@ -52,6 +49,7 @@ class ShardSMP : JavaPlugin() {
         getCommand("upgradeitem")!!.setExecutor(UpgradeItemCommand(this))
         getCommand("lives")!!.setExecutor(LivesCommand(this))
         getCommand("lives")!!.setTabCompleter(LivesTabCompleter())
+        getCommand("donate")!!.setExecutor(DonateCommand(this))
 
         val pyroFireGiveRunnable = PyroFireGiveRunnable(this)
         val lifestealerHealthBoostRunnable = LifestealerHealthBoostRunnable(this)
