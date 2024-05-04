@@ -11,19 +11,24 @@ import me.lutto.shardsmp.items.weapons.*
 import me.lutto.shardsmp.listeners.CooldownListener
 import me.lutto.shardsmp.listeners.DragonEggListener
 import me.lutto.shardsmp.listeners.ItemUpgradeListener
+import me.lutto.shardsmp.listeners.LivesListener
 import me.lutto.shardsmp.manager.ItemManager
+import me.lutto.shardsmp.manager.LivesManager
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 class ShardSMP : JavaPlugin() {
 
     lateinit var itemManager: ItemManager
+    lateinit var livesManager: LivesManager
 
     override fun onEnable() {
         itemManager = ItemManager(this)
+        livesManager = LivesManager(this)
 
         Bukkit.getPluginManager().registerEvents(DragonEggListener(this), this)
         Bukkit.getPluginManager().registerEvents(ItemUpgradeListener(this), this)
+        Bukkit.getPluginManager().registerEvents(LivesListener(this), this)
 
         Bukkit.getPluginManager().registerEvents(Shard(this), this)
         Bukkit.getPluginManager().registerEvents(Life(this), this)
