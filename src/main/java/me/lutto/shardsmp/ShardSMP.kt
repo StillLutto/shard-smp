@@ -47,11 +47,13 @@ class ShardSMP : JavaPlugin() {
         val pyroFireGiveRunnable = PyroFireGiveRunnable(this)
         val lifestealerHealthBoostRunnable = LifestealerHealthBoostRunnable(this)
         val poseidonWaterBreathingRunnable = PoseidonWaterBreathingRunnable(this)
+        val tankShieldResistanceRunnable = TankShieldResistanceRunnable(this)
         val titansEdgeStrengthRunnable = TitansEdgeStrengthRunnable(this)
         val vanishBladeInvisibilityRunnable = VanishBladeInvisibilityRunnable(this)
         pyroFireGiveRunnable.start()
         lifestealerHealthBoostRunnable.start()
         poseidonWaterBreathingRunnable.start()
+        tankShieldResistanceRunnable.start()
         titansEdgeStrengthRunnable.start()
         vanishBladeInvisibilityRunnable.start()
     }
