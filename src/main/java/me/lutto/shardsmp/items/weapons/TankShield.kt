@@ -68,7 +68,6 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     fun onAbilityActivate(event: AbilityActivateEvent) {
         if (event.getItem() != shardSMP.itemManager.getItem("tank_shield")) return
         val player: Player = event.getPlayer()
-        val customItem: CustomCooldownItem = event.getItem()
 
         player.addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 2))
         player.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 200, 2))
@@ -82,9 +81,9 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
             }, 1, 40
         )
 
-        customItem.setIsActivated(true)
+        shardSMP.itemManager.setIsActivated(event.getItemUUID(), true)
         Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
-            customItem.setIsActivated(false)
+            shardSMP.itemManager.setIsActivated(event.getItemUUID(), false)
             actionbarWarning.cancel()
             player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = 0.1
         }, 200)
@@ -104,7 +103,8 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
             if (!item.itemMeta.persistentDataContainer.has(customItemKey)) continue
             if (!item.itemMeta.persistentDataContainer.has(uuidKey)) continue
             if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "tank_shield") continue
-            if (!(shardSMP.itemManager.getCooldownItem(item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] ?: return)?.isActivated() ?: return)) continue
+            val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+            if (!shardSMP.itemManager.isActivated(itemUUID)) continue
 
             event.isCancelled = true
         }

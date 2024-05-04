@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionType
+import java.util.*
 
 class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "vanish_blade",
@@ -89,17 +90,15 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
     @EventHandler
     fun onAbilityActivate(event: AbilityActivateEvent) {
-        if (event.getItem() != shardSMP.itemManager.getItem("vanish_blade")) return
+        if (event.getItem() != shardSMP.itemManager.getCooldownItem("vanish_blade")) return
         val player: Player = event.getPlayer()
-        val customItem = event.getItem()
 
-        customItem.setIsActivated(true)
         player.isInvisible = true
         changeEquipment(player, false)
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(shardSMP, Runnable {
             player.sendRichMessage("<green>You are now visible to all players")
-            customItem.setIsActivated(false)
+            shardSMP.itemManager.setIsActivated(event.getItemUUID(), false)
             player.isInvisible = false
             changeEquipment(player, true)
         }, 300)
@@ -131,11 +130,11 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
                         if (!item.itemMeta.persistentDataContainer.has(customItemKey)) continue
                         if (!item.itemMeta.persistentDataContainer.has(uuidKey)) continue
                         if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "vanish_blade") continue
-                        if (!(shardSMP.itemManager.getCooldownItem(item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] ?: return)?.isActivated() ?: return)) continue
+                        val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+                        if (!shardSMP.itemManager.isActivated(itemUUID)) continue
 
                         for (index in packet.slots.indices) {
                             packet.slots[index] = Pair(packet.slots[index].first, CraftItemStack.asNMSCopy(ItemStack(Material.AIR)))
-                            playerFromPacket.sendMessage(packet.slots[index].toString())
                         }
                         break
                     }
@@ -159,15 +158,7 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
         }
 
         player.isInvisible = false
-        for (onlinePlayer in Bukkit.getOnlinePlayers()) {
-            if (onlinePlayer.uniqueId === player.uniqueId) continue
-            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.HAND, ItemStack(Material.AIR))
-            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.OFF_HAND, ItemStack(Material.AIR))
-            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.HEAD, ItemStack(Material.AIR))
-            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.CHEST, ItemStack(Material.AIR))
-            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.LEGS, ItemStack(Material.AIR))
-            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.FEET, ItemStack(Material.AIR))
-        }
+        changeEquipment(player, true)
     }
 
 }
