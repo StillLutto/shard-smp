@@ -157,6 +157,17 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
             channel.pipeline().remove(player.name)
             return@submit
         }
+
+        player.isInvisible = false
+        for (onlinePlayer in Bukkit.getOnlinePlayers()) {
+            if (onlinePlayer.uniqueId === player.uniqueId) continue
+            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.HAND, ItemStack(Material.AIR))
+            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.OFF_HAND, ItemStack(Material.AIR))
+            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.HEAD, ItemStack(Material.AIR))
+            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.CHEST, ItemStack(Material.AIR))
+            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.LEGS, ItemStack(Material.AIR))
+            onlinePlayer.sendEquipmentChange(player, EquipmentSlot.FEET, ItemStack(Material.AIR))
+        }
     }
 
 }
