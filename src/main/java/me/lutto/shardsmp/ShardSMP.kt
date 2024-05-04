@@ -50,6 +50,7 @@ class ShardSMP : JavaPlugin() {
         getCommand("lives")!!.setExecutor(LivesCommand(this))
         getCommand("lives")!!.setTabCompleter(LivesTabCompleter())
         getCommand("donate")!!.setExecutor(DonateCommand(this))
+        getCommand("revive")!!.setExecutor(ReviveCommand(this))
 
         val pyroFireGiveRunnable = PyroFireGiveRunnable(this)
         val lifestealerHealthBoostRunnable = LifestealerHealthBoostRunnable(this)

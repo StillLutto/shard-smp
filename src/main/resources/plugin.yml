@@ -18,3 +18,6 @@ commands:
   donate:
     description: Donate your lives with this!
     default: op
+  revive:
+    description: Revive any player!
+    default: op
