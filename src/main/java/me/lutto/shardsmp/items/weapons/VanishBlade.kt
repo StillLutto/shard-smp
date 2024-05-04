@@ -96,12 +96,17 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
         player.isInvisible = true
         changeEquipment(player, false)
 
+        var abilityDuration: Long = 300
+        if (shardSMP.itemManager.isUpgraded(event.getItemUUID())) {
+            abilityDuration = 500
+        }
+
         Bukkit.getScheduler().runTaskLaterAsynchronously(shardSMP, Runnable {
             player.sendRichMessage("<green>You are now visible to all players")
             shardSMP.itemManager.setIsActivated(event.getItemUUID(), false)
             player.isInvisible = false
             changeEquipment(player, true)
-        }, 300)
+        }, abilityDuration)
     }
 
     @EventHandler
