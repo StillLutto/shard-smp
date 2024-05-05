@@ -60,7 +60,7 @@ class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
         val itemInMainHand = player.inventory.itemInMainHand
         val customItemKey = NamespacedKey(shardSMP, "custom_item")
         val uuidKey = NamespacedKey(shardSMP, "uuid")
-        if (itemInMainHand.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "lifestealer") return
+        if (itemInMainHand.itemMeta != null && itemInMainHand.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "lifestealer") return
 
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
         var chance = Random().nextInt(4) == 0

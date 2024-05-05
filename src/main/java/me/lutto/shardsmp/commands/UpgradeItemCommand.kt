@@ -30,6 +30,11 @@ class UpgradeItemCommand(private val shardSMP: ShardSMP) : CommandExecutor {
 
         val itemInMainHand: ItemStack = sender.inventory.itemInMainHand
 
+        if (itemInMainHand.isEmpty) {
+            sender.sendRichMessage("<red>This slot is empty!")
+            return false
+        }
+
         val customItemKey = NamespacedKey(shardSMP, "custom_item")
         if (!itemInMainHand.itemMeta.persistentDataContainer.has(customItemKey)) {
             sender.sendRichMessage("<red>This item is not a custom item!")
