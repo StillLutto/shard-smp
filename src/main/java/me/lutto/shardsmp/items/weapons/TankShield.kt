@@ -41,6 +41,8 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     override fun getUpgradedCooldownTime(): Int = 90
     override fun getUpgradedCustomModelData(): Int = 8
 
+    private var cannotHitPlayer: MutableSet<UUID> = mutableSetOf()
+
     init {
         val turtleMasterPotion = ItemStack(Material.SPLASH_POTION)
         val turtleMasterPotionMeta = turtleMasterPotion.itemMeta as PotionMeta
@@ -82,8 +84,15 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
         )
 
         shardSMP.itemManager.setIsActivated(event.getItemUUID(), true)
+        cannotHitPlayer.add(player.uniqueId)
+        if (shardSMP.itemManager.isUpgraded(event.getItemUUID())) {
+            cannotHitPlayer.remove(player.uniqueId)
+            actionbarWarning.cancel()
+        }
+
         Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
             shardSMP.itemManager.setIsActivated(event.getItemUUID(), false)
+            cannotHitPlayer.remove(player.uniqueId)
             actionbarWarning.cancel()
             player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = 0.1
         }, 200)
@@ -93,21 +102,8 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     fun onEntityDamage(event: EntityDamageByEntityEvent) {
         if (event.damager !is Player) return
         val player: Player = event.damager as Player
-
-        for (item in player.inventory) {
-            val customItemKey = NamespacedKey(shardSMP, "custom_item")
-            val uuidKey = NamespacedKey(shardSMP, "uuid")
-
-            if (item == null) continue
-            if (item.itemMeta == null) continue
-            if (!item.itemMeta.persistentDataContainer.has(customItemKey)) continue
-            if (!item.itemMeta.persistentDataContainer.has(uuidKey)) continue
-            if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "tank_shield") continue
-            val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
-            if (!shardSMP.itemManager.isActivated(itemUUID)) continue
-
-            event.isCancelled = true
-        }
+        if (!cannotHitPlayer.contains(player.uniqueId)) return
+        event.isCancelled = true
     }
 
     @EventHandler
