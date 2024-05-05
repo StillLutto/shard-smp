@@ -77,7 +77,8 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         if (!itemInMainHand.itemMeta.persistentDataContainer.has(customItemKey)) return
         if (!itemInMainHand.itemMeta.persistentDataContainer.has(uuidKey)) return
         if (itemInMainHand.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "pyro_sword") return
-        if (!(shardSMP.itemManager.getCooldownItem(itemInMainHand.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] ?: return)?.isActivated() ?: return)) return
+        val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+        if (!shardSMP.itemManager.isActivated(itemUUID)) return
 
         val damagee = event.entity as Player
         if (damagee.isDead) return
@@ -86,7 +87,6 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         damagee.removePotionEffect(PotionEffectType.FIRE_RESISTANCE)
         damagee.sendActionBar(Component.text("Fire Removed!", NamedTextColor.RED))
 
-        val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
         Bukkit.getPluginManager().callEvent(AbilityActivateEvent(event.damager as Player,shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return, itemUUID))
 
         if (shardSMP.itemManager.isUpgraded(itemUUID)) {

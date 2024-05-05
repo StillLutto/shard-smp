@@ -52,8 +52,7 @@ class UpgradeItemCommand(private val shardSMP: ShardSMP) : CommandExecutor {
 
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "uuid"), PersistentDataType.STRING])
         if (shardSMP.itemManager.isUpgraded(itemUUID)) {
-            shardSMP.itemManager.setUpgraded(itemUUID, false)
-            sender.sendRichMessage("<green>This item is not upgraded anymore!")
+            sender.sendRichMessage("<green>This item is already upgraded!")
         } else {
             shardSMP.itemManager.setUpgraded(itemUUID, true)
             Bukkit.getPluginManager().callEvent(ItemUpgradeEvent(itemInMainHand, customItem, itemUUID))
