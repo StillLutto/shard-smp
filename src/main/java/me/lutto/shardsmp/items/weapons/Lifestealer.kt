@@ -65,7 +65,8 @@ class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
         var chance = Random().nextInt(4) == 0
         if (shardSMP.itemManager.isUpgraded(itemUUID)) {
-            chance = Random().nextInt(3) == 0
+            val randomInt = Random().nextInt(5)
+            chance = randomInt == 0 || randomInt == 1
         }
 
         if (!chance) return
