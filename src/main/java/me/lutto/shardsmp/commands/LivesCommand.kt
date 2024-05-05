@@ -1,8 +1,6 @@
 package me.lutto.shardsmp.commands
 
 import me.lutto.shardsmp.ShardSMP
-import net.kyori.adventure.text.minimessage.MiniMessage
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -68,6 +66,7 @@ class LivesCommand(private val shardSMP: ShardSMP) : CommandExecutor {
 
         if (args[0].equals("give", ignoreCase = true)) {
             if (shardSMP.livesManager.addLives(target.uniqueId, args[2].toInt())) {
+                shardSMP.livesManager.updateListName(target)
                 sender.sendRichMessage("<green>Given ${args[2]} lives to ${target.name} successfully.")
                 sender.sendRichMessage("<green>${target.name} now has ${shardSMP.livesManager.getLives(target.uniqueId)}")
             } else {
@@ -80,6 +79,7 @@ class LivesCommand(private val shardSMP: ShardSMP) : CommandExecutor {
 
         if (args[0].equals("remove", ignoreCase = true)) {
             shardSMP.livesManager.removeLives(target.uniqueId, args[2].toInt())
+            shardSMP.livesManager.updateListName(target)
             sender.sendRichMessage("<green>Removed ${args[2]} lives from ${target.name} successfully.")
             sender.sendRichMessage("<green>${target.name} now has ${shardSMP.livesManager.getLives(target.uniqueId)}")
             return true
@@ -88,14 +88,7 @@ class LivesCommand(private val shardSMP: ShardSMP) : CommandExecutor {
         if (args[0].equals("set", ignoreCase = true)) {
             if (shardSMP.livesManager.setLives(target.uniqueId, args[2].toInt())) {
                 sender.sendRichMessage("<green>Set ${target.name} to ${args[2]} lives.")
-
-                val targetLives: Int = shardSMP.livesManager.getLives(target.uniqueId)
-                target.playerListName(MiniMessage.miniMessage().deserialize("<red>[$targetLives] <white>${PlainTextComponentSerializer.plainText().serialize(target.displayName())}"))
-                if (targetLives >= 4) {
-                    target.playerListName(MiniMessage.miniMessage().deserialize("<green>[$targetLives] <white>${PlainTextComponentSerializer.plainText().serialize(target.displayName())}"))
-                } else if (targetLives >= 2) {
-                    target.playerListName(MiniMessage.miniMessage().deserialize("<gold>[$targetLives] <white>${PlainTextComponentSerializer.plainText().serialize(target.displayName())}"))
-                }
+                shardSMP.livesManager.updateListName(target)
             } else {
                 sender.sendRichMessage("<red>Something went wrong. Please try again.")
             }

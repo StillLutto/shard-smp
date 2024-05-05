@@ -1,8 +1,6 @@
 package me.lutto.shardsmp.commands
 
 import me.lutto.shardsmp.ShardSMP
-import net.kyori.adventure.text.minimessage.MiniMessage
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -47,13 +45,7 @@ class DonateCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             sender.sendRichMessage("<green>Given ${args[1]} lives to ${target.name} successfully.")
             sender.sendRichMessage("<green>${target.name} now has ${shardSMP.livesManager.getLives(target.uniqueId)}")
 
-            val targetLives: Int = shardSMP.livesManager.getLives(target.uniqueId)
-            target.playerListName(MiniMessage.miniMessage().deserialize("<red>[$targetLives] <white>${PlainTextComponentSerializer.plainText().serialize(target.displayName())}"))
-            if (targetLives >= 4) {
-                target.playerListName(MiniMessage.miniMessage().deserialize("<green>[$targetLives] <white>${PlainTextComponentSerializer.plainText().serialize(target.displayName())}"))
-            } else if (targetLives >= 2) {
-                target.playerListName(MiniMessage.miniMessage().deserialize("<gold>[$targetLives] <white>${PlainTextComponentSerializer.plainText().serialize(target.displayName())}"))
-            }
+            shardSMP.livesManager.updateListName(target)
         } else {
             sender.sendRichMessage("<red>Please try again. Player lives must be between 1 and 5.")
             sender.sendRichMessage("<red>${target.name} has ${shardSMP.livesManager.getLives(target.uniqueId)}")

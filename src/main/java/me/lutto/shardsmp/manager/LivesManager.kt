@@ -3,10 +3,12 @@ package me.lutto.shardsmp.manager
 import me.lutto.shardsmp.ShardSMP
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Player
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -31,6 +33,16 @@ class LivesManager(private val shardSMP: ShardSMP) {
         }
 
         livesFileConfig = YamlConfiguration.loadConfiguration(livesFile)
+    }
+
+    fun updateListName(player: Player) {
+        val playerLives: Int = getLives(player.uniqueId)
+        player.playerListName(MiniMessage.miniMessage().deserialize("<red>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
+        if (playerLives >= 4) {
+            player.playerListName(MiniMessage.miniMessage().deserialize("<green>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
+        } else if (playerLives >= 2) {
+            player.playerListName(MiniMessage.miniMessage().deserialize("<gold>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
+        }
     }
 
     fun setLives(uuid: UUID, amount: Int): Boolean {
