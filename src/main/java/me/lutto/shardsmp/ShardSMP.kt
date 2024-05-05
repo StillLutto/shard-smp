@@ -3,31 +3,39 @@ package me.lutto.shardsmp
 import me.lutto.shardsmp.commands.*
 import me.lutto.shardsmp.commands.tabcompleters.GiveItemTabCompleter
 import me.lutto.shardsmp.commands.tabcompleters.LivesTabCompleter
-import me.lutto.shardsmp.instance.*
 import me.lutto.shardsmp.items.miscellaneous.Life
 import me.lutto.shardsmp.items.miscellaneous.Shard
 import me.lutto.shardsmp.items.weapons.*
-import me.lutto.shardsmp.listeners.CooldownListener
-import me.lutto.shardsmp.listeners.DragonEggListener
-import me.lutto.shardsmp.listeners.ItemUpgradeListener
-import me.lutto.shardsmp.listeners.LivesListener
+import me.lutto.shardsmp.listeners.*
+import me.lutto.shardsmp.manager.ItemEffectManager
 import me.lutto.shardsmp.manager.ItemManager
 import me.lutto.shardsmp.manager.LivesManager
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 
 class ShardSMP : JavaPlugin() {
 
     lateinit var itemManager: ItemManager
     lateinit var livesManager: LivesManager
+    lateinit var itemEffectManager: ItemEffectManager
 
     override fun onEnable() {
         itemManager = ItemManager(this)
         livesManager = LivesManager(this)
+        itemEffectManager = ItemEffectManager(this)
+
+        itemEffectManager.addItemEffect("pyro_sword", PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 0), false)
+        itemEffectManager.addItemEffect("lifestealer", PotionEffect(PotionEffectType.HEALTH_BOOST, PotionEffect.INFINITE_DURATION, 1), true)
+        itemEffectManager.addItemEffect("poseidon_trident", PotionEffect(PotionEffectType.WATER_BREATHING, PotionEffect.INFINITE_DURATION, 0), true)
+        itemEffectManager.addItemEffect("tank_shield", PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 0), true)
+        itemEffectManager.addItemEffect("vanish_blade", PotionEffect(PotionEffectType.INVISIBILITY, PotionEffect.INFINITE_DURATION, 0), true)
 
         Bukkit.getPluginManager().registerEvents(DragonEggListener(this), this)
         Bukkit.getPluginManager().registerEvents(ItemUpgradeListener(this), this)
         Bukkit.getPluginManager().registerEvents(LivesListener(this), this)
+        Bukkit.getPluginManager().registerEvents(ItemEffectListener(this), this)
 
         Bukkit.getPluginManager().registerEvents(Shard(this), this)
         Bukkit.getPluginManager().registerEvents(Life(this), this)
@@ -51,19 +59,6 @@ class ShardSMP : JavaPlugin() {
         getCommand("lives")!!.setTabCompleter(LivesTabCompleter())
         getCommand("donate")!!.setExecutor(DonateCommand(this))
         getCommand("revive")!!.setExecutor(ReviveCommand(this))
-
-        val pyroFireGiveRunnable = PyroFireGiveRunnable(this)
-        val lifestealerHealthBoostRunnable = LifestealerHealthBoostRunnable(this)
-        val poseidonWaterBreathingRunnable = PoseidonWaterBreathingRunnable(this)
-        val tankShieldResistanceRunnable = TankShieldResistanceRunnable(this)
-        val titansEdgeStrengthRunnable = TitansEdgeStrengthRunnable(this)
-        val vanishBladeInvisibilityRunnable = VanishBladeInvisibilityRunnable(this)
-        pyroFireGiveRunnable.start()
-        lifestealerHealthBoostRunnable.start()
-        poseidonWaterBreathingRunnable.start()
-        tankShieldResistanceRunnable.start()
-        titansEdgeStrengthRunnable.start()
-        vanishBladeInvisibilityRunnable.start()
     }
 
 }
