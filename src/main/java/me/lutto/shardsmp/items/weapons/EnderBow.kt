@@ -62,7 +62,7 @@ class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val customItem: CustomCooldownItem = shardSMP.itemManager.getCooldownItem("ender_bow") ?: return
         val itemUUID: UUID = UUID.fromString(bow.itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "uuid"), PersistentDataType.STRING] ?: return)
-        if (!customItem.isActivated()) return
+        if (!shardSMP.itemManager.isActivated(itemUUID)) return
         if (shardSMP.itemManager.getItemCooldown()["ender_bow"]!!.asMap().containsKey(itemUUID)) return
 
         val projectile = event.projectile

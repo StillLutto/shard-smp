@@ -16,15 +16,8 @@ open class CustomCooldownItem(
     id, material, displayName, lore, customModelData
 ) {
 
-    private var isActivated: Boolean = false
-
-    fun setIsActivated(isActivated: Boolean) {
-        this.isActivated = isActivated
-    }
-
     fun isRightClick(): Boolean = rightClick
     fun getCooldownTime(): Int = cooldownTime
     fun isUsedOnActivation(): Boolean = useOnActivation
-    fun isActivated(): Boolean = isActivated
 
 }

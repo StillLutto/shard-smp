@@ -15,6 +15,7 @@ class ItemManager(private val shardSMP: ShardSMP) {
 
     private var itemList: MutableList<CustomItem> = mutableListOf()
     private val itemCooldown: MutableMap<String, Cache<UUID, Long>> = mutableMapOf()
+    private val isActivated: MutableSet<UUID> = mutableSetOf()
     private val upgradedItems: MutableMap<UUID, Boolean> = mutableMapOf()
 
     private var upgradedItemsFile: File
@@ -68,8 +69,18 @@ class ItemManager(private val shardSMP: ShardSMP) {
 
     fun resetItemCooldown(id: String, uuid: UUID) {
         (itemCooldown[id] ?: return).invalidate(uuid)
-        (shardSMP.itemManager.getCooldownItem(id) ?: return).setIsActivated(false)
+        setIsActivated(uuid, false)
     }
+
+    fun setIsActivated(uuid: UUID, activated: Boolean) {
+        if (activated) {
+            isActivated.add(uuid)
+        } else {
+            isActivated.remove(uuid)
+        }
+    }
+
+    fun isActivated(uuid: UUID): Boolean = isActivated.contains(uuid)
 
     fun setUpgraded(uuid: UUID, upgraded: Boolean) {
         if (upgradedItemsConfig.contains(uuid.toString())) return

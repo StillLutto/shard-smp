@@ -57,7 +57,11 @@ class TitansEdge(private val shardSMP: ShardSMP) : CustomCooldownItem(
     fun onAbilityActivated(event: AbilityActivateEvent) {
         if (event.getItem() != shardSMP.itemManager.getItem("titans_edge")) return
 
-        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 2))
+        var abilityDuration = 200
+        if (shardSMP.itemManager.isUpgraded(event.getItemUUID())) {
+            abilityDuration = 300
+        }
+        event.getPlayer().addPotionEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, abilityDuration, 2))
     }
 
 }
