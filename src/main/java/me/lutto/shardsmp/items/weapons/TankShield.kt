@@ -83,11 +83,14 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
             }, 1, 40
         )
 
+        var abilityDuration: Long = 300
         shardSMP.itemManager.setIsActivated(event.getItemUUID(), true)
         cannotHitPlayer.add(player.uniqueId)
+
         if (shardSMP.itemManager.isUpgraded(event.getItemUUID())) {
             cannotHitPlayer.remove(player.uniqueId)
             actionbarWarning.cancel()
+            abilityDuration = 500
         }
 
         Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
@@ -95,7 +98,7 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
             cannotHitPlayer.remove(player.uniqueId)
             actionbarWarning.cancel()
             player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = 0.1
-        }, 200)
+        }, abilityDuration)
     }
 
     @EventHandler
