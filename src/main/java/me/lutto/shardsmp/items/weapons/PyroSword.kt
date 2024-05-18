@@ -4,6 +4,7 @@ import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
+import me.lutto.shardsmp.items.events.AbilityDeactivateEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -87,7 +88,12 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         damagee.removePotionEffect(PotionEffectType.FIRE_RESISTANCE)
         damagee.sendActionBar(Component.text("Fire Removed!", NamedTextColor.RED))
 
-        Bukkit.getPluginManager().callEvent(AbilityActivateEvent(event.damager as Player,shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return, itemUUID))
+        if (!shardSMP.itemManager.isActivated(itemUUID)) {
+            Bukkit.getPluginManager().callEvent(AbilityActivateEvent(event.damager as Player,shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return, itemUUID))
+        } else {
+            Bukkit.getPluginManager().callEvent(AbilityDeactivateEvent(event.damager as Player,shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return))
+            return
+        }
 
         if (shardSMP.itemManager.isUpgraded(itemUUID)) {
             Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
