@@ -31,6 +31,7 @@ class ShardSMP : JavaPlugin() {
         itemEffectManager.addItemEffect("poseidon_trident", PotionEffect(PotionEffectType.WATER_BREATHING, PotionEffect.INFINITE_DURATION, 0), true)
         itemEffectManager.addItemEffect("tank_shield", PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 0), true)
         itemEffectManager.addItemEffect("tank_shield", PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 0), true)
+        itemEffectManager.addItemEffect("titans_edge", PotionEffect(PotionEffectType.INCREASE_DAMAGE, PotionEffect.INFINITE_DURATION, 1), true)
         itemEffectManager.addItemEffect("vanish_blade", PotionEffect(PotionEffectType.INVISIBILITY, PotionEffect.INFINITE_DURATION, 0), true)
 
         Bukkit.getPluginManager().registerEvents(DragonEggListener(this), this)
