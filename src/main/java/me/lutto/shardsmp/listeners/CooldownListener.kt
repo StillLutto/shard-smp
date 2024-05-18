@@ -39,6 +39,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         if (itemCooldown.asMap().containsKey(itemUUID)) {
             var durationLeft: Long = (itemCooldown.asMap()[itemUUID] ?: return false) - System.currentTimeMillis()
             if (customItem is Upgradable) run {
+                if (!shardSMP.itemManager.isUpgraded(itemUUID)) return@run
                 val timePassed = TimeUnit.SECONDS.toMillis(customItem.getCooldownTime().toLong()) - durationLeft
                 val upgradedCooldown = TimeUnit.SECONDS.toMillis((customItem as Upgradable).getUpgradedCooldownTime().toLong())
                 durationLeft = upgradedCooldown - timePassed
@@ -94,9 +95,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         }
 
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING] ?: return)
-        if (!checkCooldown(player, itemId, itemUUID)) {
-            return
-        }
+        if (!checkCooldown(player, itemId, itemUUID)) return
 
         if (!customItem.isUsedOnActivation() && shardSMP.itemManager.isUpgraded(itemUUID)) {
             Bukkit.getPluginManager().callEvent(AbilityDeactivateEvent(player, customItem))
