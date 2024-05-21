@@ -97,11 +97,10 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING] ?: return)
         if (!checkCooldown(player, itemId, itemUUID)) return
 
-        if (!customItem.isUsedOnActivation() && shardSMP.itemManager.isUpgraded(itemUUID)) {
-            Bukkit.getPluginManager().callEvent(AbilityDeactivateEvent(player, customItem))
+        if (!customItem.isUsedOnActivation() && shardSMP.itemManager.isActivated(itemUUID)) {
             player.sendActionBar(MiniMessage.miniMessage().deserialize("<red>${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated"))
             return Bukkit.getPluginManager().callEvent(AbilityDeactivateEvent(player, customItem))
-        } else if(!(customItem.isUsedOnActivation())) {
+        } else if (!customItem.isUsedOnActivation()) {
             player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
             return shardSMP.itemManager.setIsActivated(itemUUID, true)
         }
