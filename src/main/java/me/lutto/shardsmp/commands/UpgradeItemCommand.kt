@@ -60,7 +60,7 @@ class UpgradeItemCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             sender.sendRichMessage("<green>This item is already upgraded!")
         } else {
             shardSMP.itemManager.setUpgraded(itemUUID, true)
-            Bukkit.getPluginManager().callEvent(ItemUpgradeEvent(itemInMainHand, customItem, itemUUID))
+            Bukkit.getPluginManager().callEvent(ItemUpgradeEvent(sender, itemInMainHand, customItem, itemUUID))
             sender.sendRichMessage("<green>This item has been upgraded!")
         }
         return true

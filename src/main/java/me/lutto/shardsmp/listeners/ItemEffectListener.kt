@@ -2,6 +2,7 @@ package me.lutto.shardsmp.listeners
 
 import io.papermc.paper.event.player.PlayerInventorySlotChangeEvent
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.items.events.ItemUpgradeEvent
 import org.bukkit.NamespacedKey
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -13,7 +14,7 @@ import java.util.*
 
 class ItemEffectListener(private val shardSMP: ShardSMP) : Listener {
 
-    fun checkItemEffect(item: ItemStack): PotionEffect? {
+    private fun checkItemEffect(item: ItemStack): PotionEffect? {
         val customItemKey = NamespacedKey(shardSMP, "custom_item")
         val uuidKey = NamespacedKey(shardSMP, "uuid")
 
@@ -50,55 +51,11 @@ class ItemEffectListener(private val shardSMP: ShardSMP) : Listener {
         }
     }
 
-//    @EventHandler
-//    fun onPlayerJoin(event: PlayerJoinEvent) {
-//        val playerReceiving: Player = event.player
-//        event.player.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 0))
-//
-//        val channelHandler: ChannelDuplexHandler = object : ChannelDuplexHandler() {
-//
-//            @Throws(Exception::class)
-//            override fun write(ctx: ChannelHandlerContext, rawPacket: Any, promise: ChannelPromise) {
-//                if (rawPacket is ClientboundContainerSetSlotPacket) {
-//                    val packet: ClientboundContainerSetSlotPacket = rawPacket
-//                    playerReceiving.sendMessage("1")
-//
-//                    val item: ItemStack = CraftItemStack.asBukkitCopy(packet.item)
-//                    val customItemKey = NamespacedKey(shardSMP, "custom_item")
-//                    val uuidKey = NamespacedKey(shardSMP, "uuid")
-//
-//                    if (item.itemMeta == null) return
-//                    playerReceiving.sendMessage("2")
-//                    if (!item.itemMeta.persistentDataContainer.has(customItemKey)) return
-//                    playerReceiving.sendMessage("3")
-//                    if (!item.itemMeta.persistentDataContainer.has(uuidKey)) return
-//                    playerReceiving.sendMessage("4")
-//                    for ((itemId, effect) in shardSMP.itemEffectManager.getItemEffects()) {
-//                        if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != itemId) continue
-//                        val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
-//                        if (shardSMP.itemEffectManager.isUpgradedItem(itemId) && !shardSMP.itemManager.isUpgraded(itemUUID)) continue
-//
-//                        playerReceiving.sendMessage("5")
-//                        break
-//                    }
-//                }
-//
-//                super.write(ctx, rawPacket, promise)
-//            }
-//        }
-//
-//        val pipeline: ChannelPipeline = (playerReceiving as CraftPlayer).handle.connection.connection.channel.pipeline()
-//        pipeline.addBefore("packet_handler", playerReceiving.name, channelHandler)
-//    }
-//
-//    @EventHandler
-//    fun onPlayerQuit(event: PlayerQuitEvent) {
-//        val player: Player = event.player
-//        val channel: Channel = (player as CraftPlayer).handle.connection.connection.channel
-//        channel.eventLoop().submit {
-//            channel.pipeline().remove(player.name)
-//            return@submit
-//        }
-//    }
+    @EventHandler
+    fun onItemUpgrade(event: ItemUpgradeEvent) {
+        if (checkItemEffect(event.getItem()) != null) {
+            event.getPlayer().addPotionEffect(checkItemEffect(event.getItem())!!)
+        }
+    }
 
 }
