@@ -39,7 +39,7 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
 ), Upgradable, Listener {
 
     override fun getUpgradedCooldownTime(): Int = 120
-    override fun getUpgradedCustomModelData(): Int = 4
+    override fun getUpgradedCustomModelData(): Int = 15
 
     init {
         val itemMeta: ItemMeta = item.itemMeta
