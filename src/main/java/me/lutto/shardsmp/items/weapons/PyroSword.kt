@@ -7,7 +7,6 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
@@ -22,7 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionData
-import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import java.util.*
@@ -88,7 +86,6 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         val damagee = event.entity as Player
         if (damagee.isDead) return
 
-        val firePotionDuration = (damagee.getPotionEffect(PotionEffectType.FIRE_RESISTANCE) ?: return).duration
         damagee.removePotionEffect(PotionEffectType.FIRE_RESISTANCE)
         damagee.sendActionBar(Component.text("Fire Removed!", NamedTextColor.RED))
 
@@ -96,16 +93,6 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         (shardSMP.itemManager.getItemCooldown()[customItem.getId()] ?: return).asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime()) * 1000
         shardSMP.itemManager.setIsActivated(itemUUID, true)
 
-        if (shardSMP.itemManager.isUpgraded(itemUUID)) {
-            Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
-                damagee.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE,(firePotionDuration - 100), 0, true, true, true))
-            }, 1200)
-            return
-        }
-
-        Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
-            damagee.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE,(firePotionDuration - 100), 0, true, true, true))
-        }, 400)
     }
 
 }
