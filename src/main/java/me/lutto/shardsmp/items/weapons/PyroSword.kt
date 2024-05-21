@@ -10,6 +10,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -17,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice.ExactChoice
 import org.bukkit.inventory.ShapedRecipe
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionData
@@ -42,6 +44,10 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
     override fun getUpgradedCustomModelData(): Int = 4
 
     init {
+        val itemMeta: ItemMeta = item.itemMeta
+        itemMeta.addEnchant(Enchantment.FIRE_ASPECT, 2, true)
+        item.itemMeta = itemMeta
+
         val fireResPotion = ItemStack(Material.SPLASH_POTION)
         val fireResPotionItemMeta = fireResPotion.itemMeta as PotionMeta
         fireResPotionItemMeta.basePotionData = PotionData(PotionType.FIRE_RESISTANCE, true, false)

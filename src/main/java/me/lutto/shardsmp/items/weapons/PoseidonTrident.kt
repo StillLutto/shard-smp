@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice.ExactChoice
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
+import org.bukkit.inventory.meta.ItemMeta
 
 class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "poseidon_trident",
@@ -32,6 +33,10 @@ class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
     override fun getUpgradedCustomModelData(): Int = 11
 
     init {
+        val itemMeta: ItemMeta = item.itemMeta
+        itemMeta.addEnchant(Enchantment.RIPTIDE, 3, true)
+        item.itemMeta = itemMeta
+
         val riptideEnchant = ItemStack(Material.ENCHANTED_BOOK)
         val riptideEnchantItemMeta = riptideEnchant.itemMeta as EnchantmentStorageMeta
         riptideEnchantItemMeta.addEnchant(Enchantment.RIPTIDE, 3, false)
