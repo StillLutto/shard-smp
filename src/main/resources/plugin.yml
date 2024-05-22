@@ -21,3 +21,6 @@ commands:
   revive:
     description: Revive any player!
     default: op
+  convertitem:
+    description: Convert old custom item to new custom item!
+    default: op
