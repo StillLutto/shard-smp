@@ -37,6 +37,11 @@ class DonateCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             return false
         }
 
+        if (args[1].toInt() <= 0) {
+            sender.sendRichMessage("<red>Please enter a valid number!")
+            return false
+        }
+
         val target = Bukkit.getPlayerExact(args[0])
 
         if (shardSMP.livesManager.addLives(target!!.uniqueId, args[1].toInt())) {
