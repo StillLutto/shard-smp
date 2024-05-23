@@ -43,13 +43,11 @@ class DonateCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             shardSMP.livesManager.removeLives(sender.uniqueId, args[1].toInt())
 
             sender.sendRichMessage("<green>Given ${args[1]} lives to ${target.name} successfully.")
-            sender.sendRichMessage("<green>${target.name} now has ${shardSMP.livesManager.getLives(target.uniqueId)}")
 
             shardSMP.livesManager.updateListName(target)
             shardSMP.livesManager.updateListName(sender)
         } else {
             sender.sendRichMessage("<red>Please try again. Player lives must be between 1 and 5.")
-            sender.sendRichMessage("<red>${target.name} has ${shardSMP.livesManager.getLives(target.uniqueId)}")
         }
 
         return true
