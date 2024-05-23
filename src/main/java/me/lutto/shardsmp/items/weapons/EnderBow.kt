@@ -67,7 +67,9 @@ class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val projectile = event.projectile
         projectile.setMetadata("ender_bow_arrow", FixedMetadataValue(shardSMP, true))
-        Bukkit.getPluginManager().callEvent(AbilityActivateEvent((event.entity as Player), customItem, itemUUID))
+
+        (shardSMP.itemManager.getItemCooldown()[customItem.getId()] ?: return).asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime()) * 1000
+        shardSMP.itemManager.setIsActivated(itemUUID, true)
     }
 
     @EventHandler
