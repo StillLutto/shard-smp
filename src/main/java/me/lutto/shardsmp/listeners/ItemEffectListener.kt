@@ -38,6 +38,7 @@ class ItemEffectListener(private val shardSMP: ShardSMP) : Listener {
         if (checkItemEffect(event.newItemStack) != null) {
             event.player.addPotionEffect(checkItemEffect(event.newItemStack)!!)
         } else if (checkItemEffect(event.oldItemStack) != null) {
+            if (event.player.inventory.contains(event.oldItemStack)) return
             event.player.removePotionEffect(checkItemEffect(event.oldItemStack)!!.type)
         }
     }
