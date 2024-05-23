@@ -99,9 +99,9 @@ class LivesCommand(private val shardSMP: ShardSMP) : CommandExecutor {
         return true
     }
 
-    private fun isNumeric(str: String): Boolean {
+    private fun isNumeric(string: String): Boolean {
         try {
-            str.toDouble()
+            string.toInt()
             return true
         } catch (e: NumberFormatException) {
             return false
