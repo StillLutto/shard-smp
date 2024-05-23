@@ -47,7 +47,7 @@ class EarthShatterer(private val shardSMP: ShardSMP) : CustomCooldownItem(
             "PPP"
         )
         recipe.setIngredient('N', Material.NETHER_STAR)
-        recipe.setIngredient('S', ExactChoice((shardSMP.itemManager.getItem("shard")!!.getItemStack())))
+        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
         recipe.setIngredient('P', ExactChoice(speedPotion))
         recipe.setIngredient('A', Material.NETHERITE_PICKAXE)
         super.setRecipe(recipe)
