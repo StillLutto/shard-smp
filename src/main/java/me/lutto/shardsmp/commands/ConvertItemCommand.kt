@@ -22,11 +22,6 @@ class ConvertItemCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             return false
         }
 
-        if (!sender.isOp()) {
-            sender.sendRichMessage("<red>You need to be an operator to use this command!")
-            return false
-        }
-
         val itemInMainHand: ItemStack = sender.inventory.itemInMainHand
 
         val customItemKey = NamespacedKey(shardSMP, "custom_item")
