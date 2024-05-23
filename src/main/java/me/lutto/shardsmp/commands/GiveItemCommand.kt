@@ -1,6 +1,8 @@
 package me.lutto.shardsmp.commands
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.items.CustomItem
+import me.lutto.shardsmp.items.Upgradable
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.command.Command
@@ -14,11 +16,13 @@ import java.util.*
 
 class GiveItemCommand(private val shardSMP: ShardSMP) : CommandExecutor {
 
-    private fun giveItem(player: Player, itemStack: ItemStack) {
-        val item: ItemStack = itemStack
-        val itemMeta: ItemMeta = item.itemMeta
-        itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "uuid"), PersistentDataType.STRING] = UUID.randomUUID().toString()
-        item.itemMeta = itemMeta
+    private fun giveItem(player: Player, customItem: CustomItem) {
+        val item: ItemStack = customItem.getItemStack()
+        if (customItem is Upgradable) {
+            val itemMeta: ItemMeta = item.itemMeta
+            itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "uuid"), PersistentDataType.STRING] = UUID.randomUUID().toString()
+            item.itemMeta = itemMeta
+        }
         player.inventory.addItem(
             item
         )
@@ -38,10 +42,10 @@ class GiveItemCommand(private val shardSMP: ShardSMP) : CommandExecutor {
                 }
 
                 if (shardSMP.itemManager.getItem(args[0]) != null) {
-                    giveItem(sender, shardSMP.itemManager.getItem(args[0])!!.getItemStack())
+                    giveItem(sender, shardSMP.itemManager.getItem(args[0])!!)
                 } else if (args[0] == "all") {
                     for (customItem in shardSMP.itemManager.getItemList()) {
-                        giveItem(sender, shardSMP.itemManager.getItem(customItem.getId())!!.getItemStack())
+                        giveItem(sender, shardSMP.itemManager.getItem(customItem.getId())!!)
                     }
                 } else {
                     sender.sendRichMessage("<red>Item does not exist!")
