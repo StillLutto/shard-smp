@@ -53,7 +53,7 @@ class DragonEggListener(private val shardSMP: ShardSMP) : Listener {
     @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {
         for (item in event.drops) {
-            if (item.isEmpty) continue
+            if (item == null || item.isEmpty) continue
             val customItemKey = NamespacedKey(shardSMP, "custom_item")
             val uuidKey = NamespacedKey(shardSMP, "uuid")
 
