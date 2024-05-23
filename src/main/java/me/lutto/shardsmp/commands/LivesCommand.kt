@@ -102,7 +102,7 @@ class LivesCommand(private val shardSMP: ShardSMP) : CommandExecutor {
     private fun isNumeric(string: String): Boolean {
         try {
             string.toInt()
-            return true
+            return string.toInt() >= 1
         } catch (e: NumberFormatException) {
             return false
         }
