@@ -92,7 +92,6 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         val customItem: CustomCooldownItem = shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return
         (shardSMP.itemManager.getItemCooldown()[customItem.getId()] ?: return).asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime()) * 1000
         shardSMP.itemManager.setIsActivated(itemUUID, true)
-
     }
 
 }
