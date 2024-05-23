@@ -30,8 +30,8 @@ class ReviveCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             return false
         }
 
-        if (!Bukkit.getOfflinePlayer(args[0]).isWhitelisted) {
-            sender.sendRichMessage("<red>Player is not whitelisted!")
+        if (!shardSMP.livesManager.hasPlayer(Bukkit.getOfflinePlayer(args[0]).uniqueId)) {
+            sender.sendRichMessage("<red>Player not found!")
             return false
         }
 

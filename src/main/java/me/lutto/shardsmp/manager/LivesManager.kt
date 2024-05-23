@@ -113,6 +113,7 @@ class LivesManager(private val shardSMP: ShardSMP) {
         }
     }
 
+    fun hasPlayer(uuid: UUID): Boolean = livesFileConfig.contains(uuid.toString())
     fun getLives(uuid: UUID): Int = livesFileConfig.getInt(uuid.toString())
 
 }
