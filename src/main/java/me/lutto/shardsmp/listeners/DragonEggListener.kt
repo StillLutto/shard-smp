@@ -40,12 +40,13 @@ class DragonEggListener(private val shardSMP: ShardSMP) : Listener {
 
         val weaponMeta: ItemMeta = weapon.itemMeta
         val weaponUUID: UUID = UUID.randomUUID()
+        val customItem: CustomItem = shardSMP.itemManager.getItem(weapon.itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "custom_item"), PersistentDataType.STRING] ?: return) ?: return
         weaponMeta.persistentDataContainer[NamespacedKey(shardSMP, "uuid"), PersistentDataType.STRING] = weaponUUID.toString()
+        weaponMeta.setCustomModelData((customItem as Upgradable).getUpgradedCustomModelData())
         weapon.itemMeta = weaponMeta
 
         shardSMP.itemManager.setUpgraded(weaponUUID, true)
         event.inventory.result = weapon
-        val customItem: CustomItem = shardSMP.itemManager.getItem(weapon.itemMeta.persistentDataContainer[NamespacedKey(shardSMP, "custom_item"), PersistentDataType.STRING] ?: return) ?: return
         Bukkit.getPluginManager().callEvent(ItemUpgradeEvent(event.inventory.holder as Player, weapon, customItem, weaponUUID))
     }
 
