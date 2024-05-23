@@ -126,7 +126,7 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
         if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "tank_shield") return
 
         val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
-        if (shardSMP.itemManager.isUpgraded(itemUUID)) {
+        if (!shardSMP.itemManager.isUpgraded(itemUUID)) {
             event.cooldown = 75
         } else {
             event.cooldown = 50
