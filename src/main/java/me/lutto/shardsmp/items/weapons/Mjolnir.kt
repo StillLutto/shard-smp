@@ -60,6 +60,7 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
             val nearbyPlayer: Player = nearbyEntity
 
             launchPlayer(nearbyPlayer, centerRadiusLocation, 1.0)
+            if (nearbyPlayer.gameMode == GameMode.CREATIVE) continue
             if (shardSMP.itemManager.isUpgraded(itemUUID)) {
                 if (nearbyPlayer.health <= 10) {
                     nearbyPlayer.health = 0.0
