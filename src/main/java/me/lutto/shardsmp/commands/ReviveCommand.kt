@@ -19,6 +19,11 @@ class ReviveCommand(private val shardSMP: ShardSMP) : CommandExecutor {
             return false
         }
 
+        if (!sender.isOp()) {
+            sender.sendRichMessage("<red>You need to be an operator to use this command!")
+            return false
+        }
+
         if (args.size != 2) {
             sender.sendRichMessage("<red>Invalid Usage!")
             sender.sendRichMessage("<red>Please use /revive <player> <lives>")
