@@ -83,8 +83,6 @@ class ItemManager(private val shardSMP: ShardSMP) {
     fun isActivated(uuid: UUID): Boolean = isActivated.contains(uuid)
 
     fun setUpgraded(uuid: UUID, upgraded: Boolean) {
-        if (upgradedItemsConfig.contains(uuid.toString())) return
-
         upgradedItemsConfig[uuid.toString()] = upgraded
         try {
             upgradedItemsConfig.save(upgradedItemsFile)
