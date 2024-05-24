@@ -69,7 +69,7 @@ class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
         projectile.setMetadata("ender_bow_arrow", FixedMetadataValue(shardSMP, true))
 
         (shardSMP.itemManager.getItemCooldown()[customItem.getId()] ?: return).asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime()) * 1000
-        shardSMP.itemManager.setIsActivated(itemUUID, true)
+        shardSMP.itemManager.setIsActivated(itemUUID, false)
     }
 
     @EventHandler
