@@ -112,7 +112,7 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        val playerReceiving: Player = event.player
+        val player: Player = event.player
 
         val channelHandler: ChannelDuplexHandler = object : ChannelDuplexHandler() {
 
@@ -150,8 +150,40 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
             }
         }
 
-        val pipeline: ChannelPipeline = (playerReceiving as CraftPlayer).handle.connection.connection.channel.pipeline()
-        pipeline.addBefore("packet_handler", playerReceiving.name, channelHandler)
+        val pipeline: ChannelPipeline = (player as CraftPlayer).handle.connection.connection.channel.pipeline()
+        pipeline.addBefore("packet_handler", player.name, channelHandler)
+
+        Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
+            for (onlinePlayer in Bukkit.getOnlinePlayers()) {
+                if (onlinePlayer.uniqueId === player.uniqueId) continue
+                println(onlinePlayer.name)
+                for (item in onlinePlayer.inventory) {
+                    val customItemKey = NamespacedKey(shardSMP, "custom_item")
+                    val uuidKey = NamespacedKey(shardSMP, "uuid")
+
+                    if (item == null) continue
+                    if (item.itemMeta == null) continue
+                    if (!item.itemMeta.persistentDataContainer.has(customItemKey)) continue
+                    if (!item.itemMeta.persistentDataContainer.has(uuidKey)) continue
+                    if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "vanish_blade") continue
+                    val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+                    if (!shardSMP.itemManager.isActivated(itemUUID)) continue
+                    println("item activated")
+                    println(player.name)
+                    println(onlinePlayer.name)
+
+                    println(player.inventory.itemInMainHand)
+                    player.sendEquipmentChange(onlinePlayer, EquipmentSlot.HAND, ItemStack(Material.AIR))
+                    player.sendEquipmentChange(onlinePlayer, EquipmentSlot.OFF_HAND, ItemStack(Material.AIR))
+                    player.sendEquipmentChange(onlinePlayer, EquipmentSlot.HEAD, ItemStack(Material.AIR))
+                    player.sendEquipmentChange(onlinePlayer, EquipmentSlot.CHEST, ItemStack(Material.AIR))
+                    player.sendEquipmentChange(onlinePlayer, EquipmentSlot.LEGS, ItemStack(Material.AIR))
+                    player.sendEquipmentChange(onlinePlayer, EquipmentSlot.FEET, ItemStack(Material.AIR))
+                    println(player.inventory.itemInMainHand)
+                    break
+                }
+            }
+        }, 1)
     }
 
     @EventHandler
