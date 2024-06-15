@@ -3,7 +3,6 @@ package me.lutto.shardsmp.items.weapons
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
-import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*

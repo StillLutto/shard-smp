@@ -42,11 +42,12 @@ class EarthShatterer(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
         recipe.shape(
-            "SSS",
-            "NAN",
+            "DND",
+            "SAS",
             "PPP"
         )
-        recipe.setIngredient('N', Material.NETHER_STAR)
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
+        recipe.setIngredient('D', Material.DIAMOND_BLOCK)
         recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
         recipe.setIngredient('P', ExactChoice(speedPotion))
         recipe.setIngredient('A', Material.NETHERITE_PICKAXE)

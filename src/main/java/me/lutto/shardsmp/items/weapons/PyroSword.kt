@@ -53,9 +53,9 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
         recipe.shape(
-            "SSS",
-            "PDP",
-            "NBN"
+            "NBN",
+            "SDS",
+            "PPP"
         )
         recipe.setIngredient('P', ExactChoice(fireResPotion))
         recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))

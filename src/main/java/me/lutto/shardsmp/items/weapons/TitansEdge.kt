@@ -43,11 +43,12 @@ class TitansEdge(private val shardSMP: ShardSMP) : CustomCooldownItem(
         recipe.shape(
             "SSS",
             "SDS",
-            "PPP"
+            "NPN"
         )
         recipe.setIngredient('P', ExactChoice(strengthPotion))
         recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
         recipe.setIngredient('D', Material.DIAMOND_SWORD)
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
         super.setRecipe(recipe)
 
         shardSMP.itemManager.registerItem(this)

@@ -50,9 +50,9 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
         recipe.shape(
-            "NBN",
-            "SDS",
-            "III"
+            "SNS",
+            "IDI",
+            "SBS"
         )
         recipe.setIngredient('I', RecipeChoice.ExactChoice(invisibilityPotion))
         recipe.setIngredient('S', RecipeChoice.ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))

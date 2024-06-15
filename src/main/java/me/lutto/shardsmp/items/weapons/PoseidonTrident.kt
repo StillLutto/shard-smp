@@ -44,13 +44,14 @@ class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
         recipe.shape(
-            "PEP",
-            "PTP",
-            "SSS"
+            "SSS",
+            "DTD",
+            "NPN"
         )
-        recipe.setIngredient('E', ExactChoice(riptideEnchant))
-        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
         recipe.setIngredient('P', Material.SPONGE)
+        recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
+        recipe.setIngredient('D', Material.DIAMOND_BLOCK)
+        recipe.setIngredient('N', Material.NETHERITE_INGOT)
         recipe.setIngredient('T', Material.TRIDENT)
         super.setRecipe(recipe)
 

@@ -51,16 +51,15 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val recipe = ShapedRecipe(NamespacedKey.minecraft(getId()), item)
         recipe.shape(
-            "NEN",
-            "SHS",
-            "DTD"
+            "SSS",
+            "EHE",
+            "NTN"
         )
         recipe.setIngredient('H', Material.SHIELD)
         recipe.setIngredient('S', ExactChoice(shardSMP.itemManager.getItem("shard")!!.getItemStack()))
         recipe.setIngredient('T', ExactChoice(turtleMasterPotion))
         recipe.setIngredient('E', Material.ENCHANTED_GOLDEN_APPLE)
         recipe.setIngredient('N', Material.NETHERITE_INGOT)
-        recipe.setIngredient('D', Material.DIAMOND_BLOCK)
         super.setRecipe(recipe)
 
         shardSMP.itemManager.registerItem(this)
