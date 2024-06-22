@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
+@Suppress("DEPRECATION")
 class ConvertItemCommand(private val shardSMP: ShardSMP) : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
