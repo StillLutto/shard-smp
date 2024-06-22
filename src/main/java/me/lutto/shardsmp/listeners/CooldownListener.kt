@@ -1,14 +1,13 @@
 package me.lutto.shardsmp.listeners
 
 import com.google.common.cache.CacheBuilder
-import me.lutto.shardsmp.items.events.AbilityActivateEvent
-import me.lutto.shardsmp.items.events.AbilityDeactivateEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
+import me.lutto.shardsmp.items.events.AbilityActivateEvent
+import me.lutto.shardsmp.items.events.AbilityDeactivateEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
@@ -32,38 +31,35 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         }
     }
 
+    private fun getStringCooldown(durationLeft: Long): String {
+        val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(durationLeft)
+        val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(durationLeft) - minutes * 60
+        if (minutes == 0L) return "${seconds}s"
+        return "${minutes}m ${seconds}s"
+    }
+
     private fun checkCooldown(player: Player, itemId: String, itemUUID: UUID): Boolean { // false = full stop, true = continue
         val itemCooldown = shardSMP.itemManager.getItemCooldown()[itemId] ?: return false
         val customItem: CustomCooldownItem = shardSMP.itemManager.getCooldownItem(itemId) ?: return false
 
-        if (itemCooldown.asMap().containsKey(itemUUID)) {
-            var durationLeft: Long = (itemCooldown.asMap()[itemUUID] ?: return false) - System.currentTimeMillis()
-            if (customItem is Upgradable) run {
-                if (!shardSMP.itemManager.isUpgraded(itemUUID)) return@run
-                val timePassed = TimeUnit.SECONDS.toMillis(customItem.getCooldownTime().toLong()) - durationLeft
-                val upgradedCooldown = TimeUnit.SECONDS.toMillis((customItem as Upgradable).getUpgradedCooldownTime().toLong())
-                durationLeft = upgradedCooldown - timePassed
-            }
-            if (durationLeft <= 0L) {
-                shardSMP.itemManager.resetItemCooldown(itemId, itemUUID)
-                return true
-            }
+        if (!itemCooldown.asMap().containsKey(itemUUID)) return true
 
-            if (TimeUnit.MILLISECONDS.toMinutes(durationLeft) >= 2) {
-                player.sendActionBar(
-                    MiniMessage.miniMessage().deserialize(
-                        "<red>You have to wait ${TimeUnit.MILLISECONDS.toMinutes(durationLeft)} minutes and ${
-                            TimeUnit.MILLISECONDS.toSeconds(durationLeft) - TimeUnit.MILLISECONDS.toMinutes(durationLeft) * 60
-                        } seconds before using the ability again"
-                    )
-                )
-            } else {
-                player.sendActionBar(MiniMessage.miniMessage().deserialize("<red>You have to wait ${TimeUnit.MILLISECONDS.toSeconds(durationLeft)} seconds before using the ability again"))
-            }
-            return false
+        var durationLeft: Long = (itemCooldown.asMap()[itemUUID] ?: return false) - System.currentTimeMillis()
+        if (customItem is Upgradable) run {
+            if (!shardSMP.itemManager.isUpgraded(itemUUID)) return@run
+            val timePassed = TimeUnit.SECONDS.toMillis(customItem.getCooldownTime().toLong()) - durationLeft
+            val upgradedCooldown = TimeUnit.SECONDS.toMillis((customItem as Upgradable).getUpgradedCooldownTime().toLong())
+
+            durationLeft = upgradedCooldown - timePassed
         }
 
-        return true
+        if (durationLeft <= 0L) {
+            shardSMP.itemManager.resetItemCooldown(itemId, itemUUID)
+            return true
+        }
+
+        player.sendActionBar(shardSMP.miniMessage.deserialize("日 <aqua>${getStringCooldown(durationLeft)}"))
+        return false
     }
 
     @EventHandler
@@ -98,7 +94,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         if (!checkCooldown(player, itemId, itemUUID)) return
 
         if (!customItem.isUsedOnActivation() && shardSMP.itemManager.isActivated(itemUUID)) {
-            player.sendActionBar(MiniMessage.miniMessage().deserialize("<red>${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated"))
+            player.sendActionBar(shardSMP.miniMessage.deserialize("<red>${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated"))
             return Bukkit.getPluginManager().callEvent(AbilityDeactivateEvent(player, customItem))
         } else if (!customItem.isUsedOnActivation()) {
             player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
