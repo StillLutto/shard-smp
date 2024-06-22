@@ -31,7 +31,7 @@ class ShardSMP : JavaPlugin() {
         itemEffectManager.addItemEffect("pyro_sword", PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 0), true)
         itemEffectManager.addItemEffect("tank_shield", PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 0), true)
         itemEffectManager.addItemEffect("earth_shatterer", PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 0), true)
-        itemEffectManager.addItemEffect("titans_edge", PotionEffect(PotionEffectType.INCREASE_DAMAGE, PotionEffect.INFINITE_DURATION, 1), true)
+        itemEffectManager.addItemEffect("titans_edge", PotionEffect(PotionEffectType.INCREASE_DAMAGE, PotionEffect.INFINITE_DURATION, 0), true)
         itemEffectManager.addItemEffect("vanish_blade", PotionEffect(PotionEffectType.INVISIBILITY, PotionEffect.INFINITE_DURATION, 0), true)
 
         Bukkit.getPluginManager().registerEvents(ItemCraftListener(this), this)
