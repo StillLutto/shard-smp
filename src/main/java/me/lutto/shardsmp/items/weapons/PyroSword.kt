@@ -80,7 +80,7 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
         if (!itemInMainHand.itemMeta.persistentDataContainer.has(customItemKey)) return
         if (!itemInMainHand.itemMeta.persistentDataContainer.has(uuidKey)) return
         if (itemInMainHand.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "pyro_sword") return
-        val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+        val itemUUID: UUID = UUID.fromString(itemInMainHand.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
         if (!shardSMP.itemManager.isActivated(itemUUID)) return
 
         val damagee = event.entity as Player
@@ -91,7 +91,7 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
         val customItem: CustomCooldownItem = shardSMP.itemManager.getCooldownItem("pyro_sword") ?: return
         (shardSMP.itemManager.getItemCooldown()[customItem.getId()] ?: return).asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime()) * 1000
-        shardSMP.itemManager.setIsActivated(itemUUID, true)
+        shardSMP.itemManager.setIsActivated(itemUUID, false)
     }
 
 }
