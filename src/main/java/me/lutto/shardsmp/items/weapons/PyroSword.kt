@@ -71,6 +71,7 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
     fun onHit(event: EntityDamageByEntityEvent) {
         if (event.damager !is Player) return
         if (event.entity !is Player) return
+        if (!(event.entity as Player).hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) return
 
         val itemInMainHand = (event.damager as Player).inventory.itemInMainHand
         val customItemKey = NamespacedKey(shardSMP, "custom_item")
