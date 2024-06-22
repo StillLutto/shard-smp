@@ -6,14 +6,28 @@ import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.minecraft.advancements.CriteriaTriggers
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.stats.Stats
+import net.minecraft.world.effect.MobEffectInstance
+import net.minecraft.world.effect.MobEffects
+import net.minecraft.world.item.Items
 import org.bukkit.*
-import org.bukkit.entity.*
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.ItemDisplay
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityPotionEffectEvent
+import org.bukkit.event.entity.EntityResurrectEvent
+import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice.ExactChoice
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.UUID
+import java.util.*
+
 
 class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "mjolnir",
@@ -47,6 +61,59 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
         shardSMP.itemManager.registerItem(this)
     }
 
+    private fun handleTotem(player: Player): Boolean {
+        val item: ItemStack
+        when {
+            player.inventory.itemInMainHand.type == Material.TOTEM_OF_UNDYING -> {
+                item = player.inventory.itemInMainHand
+                player.inventory.itemInMainHand.amount = 0
+            }
+            player.inventory.itemInOffHand.type == Material.TOTEM_OF_UNDYING -> {
+                item = player.inventory.itemInOffHand
+                player.inventory.itemInOffHand.amount = 0
+            }
+            else -> return false
+        }
+
+        val serverPlayer: ServerPlayer = (player as CraftPlayer).handle
+        serverPlayer.awardStat(Stats.ITEM_USED[Items.TOTEM_OF_UNDYING])
+        CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, CraftItemStack.asNMSCopy(item))
+
+        serverPlayer.setHealth(1.0f)
+
+        serverPlayer.removeAllEffects(EntityPotionEffectEvent.Cause.TOTEM)
+        serverPlayer.addEffect(MobEffectInstance(MobEffects.REGENERATION, 900, 1), EntityPotionEffectEvent.Cause.TOTEM)
+        serverPlayer.addEffect(MobEffectInstance(MobEffects.ABSORPTION, 100, 1), EntityPotionEffectEvent.Cause.TOTEM)
+        serverPlayer.addEffect(MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0), EntityPotionEffectEvent.Cause.TOTEM)
+
+        serverPlayer.level().broadcastEntityEvent(serverPlayer, 35.toByte())
+        return true
+    }
+
+    private fun handleHealth(player: Player, isUpgraded: Boolean) {
+        if (isUpgraded) {
+            if (player.health <= 10) {
+                if (handleTotem(player)) return
+                player.health = 0.0
+            } else {
+                player.health -= 10
+            }
+        } else {
+            if (player.health <= 6) {
+                if (handleTotem(player)) return
+                player.health = 0.0
+            } else {
+                player.health -= 6
+            }
+        }
+    }
+
+    @EventHandler
+    fun onEntityResurrect(event: EntityResurrectEvent) {
+        println("called")
+        event.isCancelled = false
+    }
+
     private fun launchPlayer(player: Player, launchLocation: Location, launchPower: Double) {
         val direction = player.location.toVector().subtract(launchLocation.toVector()).normalize()
         val launchVelocity = direction.multiply(launchPower).setY(1)
@@ -61,17 +128,7 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
 
             launchPlayer(nearbyPlayer, centerRadiusLocation, 1.0)
             if (nearbyPlayer.gameMode == GameMode.CREATIVE) continue
-            if (shardSMP.itemManager.isUpgraded(itemUUID)) {
-                if (nearbyPlayer.health <= 10) {
-                    nearbyPlayer.health = 0.0
-                }
-                nearbyPlayer.health -= 10
-                return
-            }
-            if (nearbyPlayer.health <= 6) {
-                nearbyPlayer.health = 0.0
-            }
-            nearbyPlayer.health -= 6
+            handleHealth(nearbyPlayer, shardSMP.itemManager.isUpgraded(itemUUID))
         }
     }
 
