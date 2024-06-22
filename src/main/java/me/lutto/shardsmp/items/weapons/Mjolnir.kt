@@ -21,7 +21,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityPotionEffectEvent
-import org.bukkit.event.entity.EntityResurrectEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.RecipeChoice.ExactChoice
 import org.bukkit.inventory.ShapedRecipe
@@ -106,12 +105,6 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
                 player.health -= 6
             }
         }
-    }
-
-    @EventHandler
-    fun onEntityResurrect(event: EntityResurrectEvent) {
-        println("called")
-        event.isCancelled = false
     }
 
     private fun launchPlayer(player: Player, launchLocation: Location, launchPower: Double) {

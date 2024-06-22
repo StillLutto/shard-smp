@@ -156,7 +156,6 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
         Bukkit.getScheduler().runTaskLater(shardSMP, Runnable {
             for (onlinePlayer in Bukkit.getOnlinePlayers()) {
                 if (onlinePlayer.uniqueId === player.uniqueId) continue
-                println(onlinePlayer.name)
                 for (item in onlinePlayer.inventory) {
                     val customItemKey = NamespacedKey(shardSMP, "custom_item")
                     val uuidKey = NamespacedKey(shardSMP, "uuid")
@@ -168,18 +167,13 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
                     if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "vanish_blade") continue
                     val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
                     if (!shardSMP.itemManager.isActivated(itemUUID)) continue
-                    println("item activated")
-                    println(player.name)
-                    println(onlinePlayer.name)
 
-                    println(player.inventory.itemInMainHand)
                     player.sendEquipmentChange(onlinePlayer, EquipmentSlot.HAND, ItemStack(Material.AIR))
                     player.sendEquipmentChange(onlinePlayer, EquipmentSlot.OFF_HAND, ItemStack(Material.AIR))
                     player.sendEquipmentChange(onlinePlayer, EquipmentSlot.HEAD, ItemStack(Material.AIR))
                     player.sendEquipmentChange(onlinePlayer, EquipmentSlot.CHEST, ItemStack(Material.AIR))
                     player.sendEquipmentChange(onlinePlayer, EquipmentSlot.LEGS, ItemStack(Material.AIR))
                     player.sendEquipmentChange(onlinePlayer, EquipmentSlot.FEET, ItemStack(Material.AIR))
-                    println(player.inventory.itemInMainHand)
                     break
                 }
             }
