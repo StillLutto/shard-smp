@@ -32,3 +32,10 @@ commands:
     aliases:
       - ci
     default: op
+  maxenchant:
+    description: Add all good enchantments to any item!
+    aliases:
+      - me
+      - fullenchant
+      - fe
+    default: op

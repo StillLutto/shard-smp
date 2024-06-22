@@ -63,6 +63,7 @@ class ShardSMP : JavaPlugin() {
         getCommand("donate")!!.setExecutor(DonateCommand(this))
         getCommand("revive")!!.setExecutor(ReviveCommand(this))
         getCommand("convertitem")!!.setExecutor(ConvertItemCommand(this))
+        getCommand("maxenchant")!!.setExecutor(MaxEnchantCommand())
     }
 
 }
