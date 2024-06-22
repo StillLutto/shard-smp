@@ -4,7 +4,6 @@ import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomItem
 import me.lutto.shardsmp.items.Upgradable
 import net.kyori.adventure.text.format.TextDecoration
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
@@ -23,7 +22,7 @@ import java.util.*
 class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
     "lifestealer",
     Material.DIAMOND_SWORD,
-    MiniMessage.miniMessage().deserialize("<gradient:#57301f:#417837><gradient:#aa0000:#ff2119>Lifestealer").decoration(TextDecoration.ITALIC, false)
+    shardSMP.miniMessage.deserialize("<gradient:#57301f:#417837><gradient:#aa0000:#ff2119>Lifestealer").decoration(TextDecoration.ITALIC, false)
         .decoration(TextDecoration.ITALIC, false),
     listOf(),
     9

@@ -10,12 +10,15 @@ import me.lutto.shardsmp.listeners.*
 import me.lutto.shardsmp.manager.ItemEffectManager
 import me.lutto.shardsmp.manager.ItemManager
 import me.lutto.shardsmp.manager.LivesManager
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
 class ShardSMP : JavaPlugin() {
+
+    val miniMessage: MiniMessage = MiniMessage.miniMessage()
 
     lateinit var itemManager: ItemManager
     lateinit var livesManager: LivesManager

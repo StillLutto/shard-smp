@@ -5,7 +5,6 @@ import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.stats.Stats
@@ -31,9 +30,9 @@ import java.util.*
 class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "mjolnir",
     Material.NETHERITE_AXE,
-    MiniMessage.miniMessage().deserialize("<gradient:#3a4261:#7277a6>Mjölnir")
+    shardSMP.miniMessage.deserialize("<gradient:#3a4261:#7277a6>Mjölnir")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     6,
     true,
     120,

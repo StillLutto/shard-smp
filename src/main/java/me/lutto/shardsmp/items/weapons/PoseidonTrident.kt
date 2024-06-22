@@ -5,7 +5,6 @@ import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.block.data.Waterlogged
 import org.bukkit.enchantments.Enchantment
@@ -21,9 +20,9 @@ import org.bukkit.scheduler.BukkitRunnable
 class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "poseidon_trident",
     Material.TRIDENT,
-    MiniMessage.miniMessage().deserialize("<gradient:#1616aa:#3646ff>Poseidon's Trident")
+    shardSMP.miniMessage.deserialize("<gradient:#1616aa:#3646ff>Poseidon's Trident")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
+    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
     11,
     false,
     180,

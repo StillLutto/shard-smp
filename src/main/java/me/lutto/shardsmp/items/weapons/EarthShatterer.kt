@@ -5,7 +5,6 @@ import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.event.EventHandler
@@ -22,9 +21,9 @@ import org.bukkit.potion.PotionType
 class EarthShatterer(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "earth_shatterer",
     Material.NETHERITE_PICKAXE,
-    MiniMessage.miniMessage().deserialize("<gradient:#57301f:#417837>Earth Shatterer")
+    shardSMP.miniMessage.deserialize("<gradient:#57301f:#417837>Earth Shatterer")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     7,
     true,
     120,

@@ -3,7 +3,6 @@ package me.lutto.shardsmp.manager
 import me.lutto.shardsmp.ShardSMP
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
@@ -37,11 +36,11 @@ class LivesManager(private val shardSMP: ShardSMP) {
 
     fun updateListName(player: Player) {
         val playerLives: Int = getLives(player.uniqueId)
-        player.playerListName(MiniMessage.miniMessage().deserialize("<red>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
+        player.playerListName(shardSMP.miniMessage.deserialize("<red>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
         if (playerLives >= 4) {
-            player.playerListName(MiniMessage.miniMessage().deserialize("<green>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
+            player.playerListName(shardSMP.miniMessage.deserialize("<green>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
         } else if (playerLives >= 2) {
-            player.playerListName(MiniMessage.miniMessage().deserialize("<gold>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
+            player.playerListName(shardSMP.miniMessage.deserialize("<gold>[$playerLives] <white>${PlainTextComponentSerializer.plainText().serialize(player.displayName())}"))
         }
     }
 

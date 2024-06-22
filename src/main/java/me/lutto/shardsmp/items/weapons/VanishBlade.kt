@@ -7,7 +7,6 @@ import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket
 import org.bukkit.*
 import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer
@@ -30,9 +29,9 @@ import java.util.*
 class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "vanish_blade",
     Material.DIAMOND_SWORD,
-    MiniMessage.miniMessage().deserialize("<gradient:#919191:#c2c2c2>Vanish Blade")
+    shardSMP.miniMessage.deserialize("<gradient:#919191:#c2c2c2>Vanish Blade")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     10,
     true,
     150,

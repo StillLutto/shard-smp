@@ -5,7 +5,6 @@ import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.format.TextDecoration
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,9 +20,9 @@ import org.bukkit.potion.PotionType
 class TitansEdge(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "titans_edge",
     Material.DIAMOND_SWORD,
-    MiniMessage.miniMessage().deserialize("<gradient:#aa0000:#ff5555>Titans Edge")
+    shardSMP.miniMessage.deserialize("<gradient:#aa0000:#ff5555>Titans Edge")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     5,
     true,
     120,

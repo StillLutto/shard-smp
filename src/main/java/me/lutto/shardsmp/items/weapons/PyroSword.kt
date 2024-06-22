@@ -6,7 +6,6 @@ import me.lutto.shardsmp.items.Upgradable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
@@ -29,9 +28,9 @@ import java.util.*
 class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "pyro_sword",
     Material.DIAMOND_SWORD,
-    MiniMessage.miniMessage().deserialize("<gradient:#ff8b0f:#ffd60a>Pyro Sword")
+    shardSMP.miniMessage.deserialize("<gradient:#ff8b0f:#ffd60a>Pyro Sword")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     4,
     true,
     240,

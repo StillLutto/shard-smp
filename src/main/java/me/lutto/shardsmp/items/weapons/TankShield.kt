@@ -8,7 +8,6 @@ import me.lutto.shardsmp.items.events.AbilityActivateEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
@@ -29,9 +28,9 @@ import java.util.*
 class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "tank_shield",
     Material.SHIELD,
-    MiniMessage.miniMessage().deserialize("<gradient:#3d2216:#633723>Tank Shield")
+    shardSMP.miniMessage.deserialize("<gradient:#3d2216:#633723>Tank Shield")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(MiniMessage.miniMessage().deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
+    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
     8,
     false,
     120,
