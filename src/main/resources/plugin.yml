@@ -5,12 +5,18 @@ api-version: '1.20'
 commands:
   giveitem:
     description: Give yourself a custom item!
+    aliases:
+      - gi
     default: op
   resetcooldown:
     description: Reset item cooldowns!
+    aliases:
+      - rc
     default: op
   upgradeItem:
     description: Upgrade upgradable weapons!
+    aliases:
+      - upi
     default: op
   lives:
     description: Manage lives with this command!
@@ -23,4 +29,6 @@ commands:
     default: op
   convertitem:
     description: Convert old custom item to new custom item!
+    aliases:
+      - ci
     default: op
