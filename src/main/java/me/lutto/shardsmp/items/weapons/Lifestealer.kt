@@ -6,6 +6,7 @@ import me.lutto.shardsmp.items.Upgradable
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.*
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -71,8 +72,8 @@ class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
 
         if (!chance) return
 
-        if (player.health + event.finalDamage > 20) {
-            player.health = 20.0
+        if ((player.health + event.finalDamage) > player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value) {
+            player.health = player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
             return
         }
         player.health += event.finalDamage
