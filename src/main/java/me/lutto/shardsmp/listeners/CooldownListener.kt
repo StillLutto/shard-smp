@@ -1,6 +1,7 @@
 package me.lutto.shardsmp.listeners
 
 import com.google.common.cache.CacheBuilder
+import io.papermc.paper.event.player.PlayerInventorySlotChangeEvent
 import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
@@ -16,13 +17,17 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 class CooldownListener(private val shardSMP: ShardSMP) : Listener {
+
+    private var activationMessage: Long = -1
 
     init {
         for (customItem in shardSMP.itemManager.getItemList()) {
@@ -33,9 +38,28 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
     private fun getStringCooldown(durationLeft: Long): String {
         val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(durationLeft)
-        val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(durationLeft) - minutes * 60
+        val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(durationLeft) - (minutes * 60)
         if (minutes == 0L) return "${seconds}s"
         return "${minutes}m ${seconds}s"
+    }
+
+    private fun displayHeldItemCooldown(player: Player, slot: Int) {
+        val item = player.inventory.getItem(slot) ?: return
+
+        object : BukkitRunnable() {
+            override fun run() {
+                if (!player.isOnline) return this.cancel()
+                if (player.inventory.heldItemSlot != slot) return this.cancel()
+                if (item != player.inventory.getItem(player.inventory.heldItemSlot)) return this.cancel()
+
+                val customItemKey = NamespacedKey(shardSMP, "custom_item")
+                val uuidKey = NamespacedKey(shardSMP, "uuid")
+                val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING] ?: return this.cancel())
+                val itemID: String = item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] ?: return this.cancel()
+
+                checkCooldown(player, itemID, itemUUID)
+            }
+        }.runTaskTimer(shardSMP, 0, 20)
     }
 
     private fun checkCooldown(player: Player, itemId: String, itemUUID: UUID): Boolean { // false = full stop, true = continue
@@ -58,7 +82,9 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
             return true
         }
 
-        player.sendActionBar(shardSMP.miniMessage.deserialize("日 <aqua>${getStringCooldown(durationLeft)}"))
+        if (activationMessage + 3000 > System.currentTimeMillis()) return false
+        player.sendActionBar(shardSMP.miniMessage.deserialize("日 | <aqua>${getStringCooldown(durationLeft)}"))
+
         return false
     }
 
@@ -98,6 +124,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
             return Bukkit.getPluginManager().callEvent(AbilityDeactivateEvent(player, customItem))
         } else if (!customItem.isUsedOnActivation()) {
             player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
+            activationMessage = System.currentTimeMillis()
             return shardSMP.itemManager.setIsActivated(itemUUID, true)
         }
 
@@ -116,6 +143,7 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
         player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Activated", NamedTextColor.GREEN))
         (shardSMP.itemManager.getItemCooldown()[customItem.getId()] ?: return).asMap()[itemUUID] = System.currentTimeMillis() + (customItem.getCooldownTime()) * 1000
         shardSMP.itemManager.setIsActivated(itemUUID, true)
+        activationMessage = System.currentTimeMillis()
     }
 
     @EventHandler
@@ -128,6 +156,19 @@ class CooldownListener(private val shardSMP: ShardSMP) : Listener {
 
         player.sendActionBar(Component.text("${PlainTextComponentSerializer.plainText().serialize(itemInMainHand.displayName()).trim('[', ']')} Deactivated", NamedTextColor.RED))
         shardSMP.itemManager.setIsActivated(itemUUID, false)
+        activationMessage = System.currentTimeMillis()
+    }
+
+    @EventHandler
+    fun onPlayerSlotChange(event: PlayerInventorySlotChangeEvent) {
+        val player: Player = event.player
+        if (player.inventory.heldItemSlot != event.slot) return
+        displayHeldItemCooldown(player, player.inventory.heldItemSlot)
+    }
+
+    @EventHandler
+    fun onPlayerItemHeld(event: PlayerItemHeldEvent) {
+        displayHeldItemCooldown(event.player, event.newSlot)
     }
 
 }
