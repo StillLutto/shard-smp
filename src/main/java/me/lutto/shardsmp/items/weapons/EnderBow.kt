@@ -21,7 +21,7 @@ import java.util.*
 class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "ender_bow",
     Material.BOW,
-    shardSMP.miniMessage.deserialize("<gradient:#8e1daa:#4b14aa>Ender Bow").decoration(TextDecoration.ITALIC, false)
+    shardSMP.miniMessage.deserialize("<gradient:#8e1daa:#4b14aa>ᴇɴᴅᴇʀ ʙᴏᴡ").decoration(TextDecoration.ITALIC, false)
         .decoration(TextDecoration.ITALIC, false),
     listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
     3,

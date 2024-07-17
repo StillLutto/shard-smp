@@ -28,7 +28,7 @@ import java.util.*
 class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "tank_shield",
     Material.SHIELD,
-    shardSMP.miniMessage.deserialize("<gradient:#3d2216:#633723>Tank Shield")
+    shardSMP.miniMessage.deserialize("<gradient:#3d2216:#633723>ᴛᴀɴᴋ ѕʜɪᴇʟᴅ")
         .decoration(TextDecoration.ITALIC, false),
     listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
     8,

@@ -20,7 +20,7 @@ import org.bukkit.potion.PotionType
 class TitansEdge(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "titans_edge",
     Material.DIAMOND_SWORD,
-    shardSMP.miniMessage.deserialize("<gradient:#aa0000:#ff5555>Titans Edge")
+    shardSMP.miniMessage.deserialize("<gradient:#aa0000:#ff5555>ᴛɪᴛᴀɴѕ ᴇᴅɢᴇ")
         .decoration(TextDecoration.ITALIC, false),
     listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     5,

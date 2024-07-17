@@ -22,7 +22,7 @@ import java.util.*
 class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
     "lifestealer",
     Material.DIAMOND_SWORD,
-    shardSMP.miniMessage.deserialize("<gradient:#57301f:#417837><gradient:#aa0000:#ff2119>Lifestealer").decoration(TextDecoration.ITALIC, false)
+    shardSMP.miniMessage.deserialize("<gradient:#57301f:#417837><gradient:#aa0000:#ff2119>ʟɪꜰᴇѕᴛᴇᴀʟᴇʀ").decoration(TextDecoration.ITALIC, false)
         .decoration(TextDecoration.ITALIC, false),
     listOf(),
     9

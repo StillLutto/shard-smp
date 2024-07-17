@@ -21,7 +21,7 @@ import org.bukkit.potion.PotionType
 class EarthShatterer(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "earth_shatterer",
     Material.NETHERITE_PICKAXE,
-    shardSMP.miniMessage.deserialize("<gradient:#57301f:#417837>Earth Shatterer")
+    shardSMP.miniMessage.deserialize("<gradient:#57301f:#417837>ᴇᴀʀᴛʜ ѕʜᴀᴛᴛᴇʀᴇʀ")
         .decoration(TextDecoration.ITALIC, false),
     listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     7,

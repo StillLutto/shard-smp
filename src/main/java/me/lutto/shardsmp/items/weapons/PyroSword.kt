@@ -28,7 +28,7 @@ import java.util.*
 class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "pyro_sword",
     Material.DIAMOND_SWORD,
-    shardSMP.miniMessage.deserialize("<gradient:#ff8b0f:#ffd60a>Pyro Sword")
+    shardSMP.miniMessage.deserialize("<gradient:#ff8b0f:#ffd60a>ᴘʏʀᴏ ѕᴡᴏʀᴅ")
         .decoration(TextDecoration.ITALIC, false),
     listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     4,

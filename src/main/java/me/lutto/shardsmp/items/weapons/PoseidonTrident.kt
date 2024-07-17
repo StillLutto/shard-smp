@@ -20,7 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable
 class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "poseidon_trident",
     Material.TRIDENT,
-    shardSMP.miniMessage.deserialize("<gradient:#1616aa:#3646ff>Poseidon's Trident")
+    shardSMP.miniMessage.deserialize("<gradient:#1616aa:#3646ff>ᴘᴏѕᴇɪᴅᴏɴ'ѕ ᴛʀɪᴅᴇɴᴛ")
         .decoration(TextDecoration.ITALIC, false),
     listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
     11,

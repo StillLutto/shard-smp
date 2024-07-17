@@ -6,7 +6,10 @@ import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.CustomItem
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.plugin.java.JavaPlugin.getPlugin
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -98,3 +101,14 @@ class ItemManager(private val shardSMP: ShardSMP) {
     fun getItemCooldown(): Map<String, Cache<UUID, Long>> = itemCooldown
 
 }
+
+private val shardSMP: ShardSMP = getPlugin(ShardSMP::class.java)
+private val uuidKey = NamespacedKey(shardSMP, "uuid")
+private val customItemKey = NamespacedKey(shardSMP, "custom_item")
+
+fun ItemStack.getUUID(): UUID? {
+    if (!hasItemMeta() || !itemMeta.persistentDataContainer.has(uuidKey)) return null
+    return UUID.fromString(itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+}
+
+fun ItemStack.isCustomItem(itemName: String): Boolean = itemMeta?.persistentDataContainer?.get(customItemKey, PersistentDataType.STRING) == itemName

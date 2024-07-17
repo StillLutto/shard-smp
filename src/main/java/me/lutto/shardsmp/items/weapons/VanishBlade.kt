@@ -6,6 +6,8 @@ import me.lutto.shardsmp.ShardSMP
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
+import me.lutto.shardsmp.manager.getUUID
+import me.lutto.shardsmp.manager.isCustomItem
 import net.kyori.adventure.text.format.TextDecoration
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket
 import org.bukkit.*
@@ -29,7 +31,7 @@ import java.util.*
 class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "vanish_blade",
     Material.DIAMOND_SWORD,
-    shardSMP.miniMessage.deserialize("<gradient:#919191:#c2c2c2>Vanish Blade")
+    shardSMP.miniMessage.deserialize("<gradient:#919191:#c2c2c2>ᴠᴀɴɪѕʜ ʙʟᴀᴅᴇ")
         .decoration(TextDecoration.ITALIC, false),
     listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     10,
@@ -127,15 +129,8 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
                     if (playerFromPacket == null) return
 
                     for (item in playerFromPacket.inventory) {
-                        val customItemKey = NamespacedKey(shardSMP, "custom_item")
-                        val uuidKey = NamespacedKey(shardSMP, "uuid")
-
-                        if (item == null) continue
-                        if (item.itemMeta == null) continue
-                        if (!item.itemMeta.persistentDataContainer.has(customItemKey)) continue
-                        if (!item.itemMeta.persistentDataContainer.has(uuidKey)) continue
-                        if (item.itemMeta.persistentDataContainer[customItemKey, PersistentDataType.STRING] != "vanish_blade") continue
-                        val itemUUID: UUID = UUID.fromString(item.itemMeta.persistentDataContainer[uuidKey, PersistentDataType.STRING])
+                        if (item == null || !item.isCustomItem("vanish_blade")) continue
+                        val itemUUID: UUID = item.getUUID() ?: return
                         if (!shardSMP.itemManager.isActivated(itemUUID)) continue
 
                         for (index in packet.slots.indices) {

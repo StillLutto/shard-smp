@@ -30,7 +30,7 @@ import java.util.*
 class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
     "mjolnir",
     Material.NETHERITE_AXE,
-    shardSMP.miniMessage.deserialize("<gradient:#3a4261:#7277a6>Mjölnir")
+    shardSMP.miniMessage.deserialize("<gradient:#3a4261:#7277a6>ᴍᴊöʟɴɪʀ")
         .decoration(TextDecoration.ITALIC, false),
     listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
     6,
