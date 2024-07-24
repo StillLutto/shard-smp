@@ -11,7 +11,9 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.inventory.PrepareItemCraftEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
@@ -21,6 +23,7 @@ class DragonEggListener(private val shardSMP: ShardSMP) : Listener {
 
     @EventHandler
     fun onPrepareItemCraft(event: PrepareItemCraftEvent) {
+        if (event.inventory.type != InventoryType.WORKBENCH) return
         if (event.inventory.holder !is Player) return
         if (!event.inventory.matrix.contains(ItemStack(Material.DRAGON_EGG))) return
 
