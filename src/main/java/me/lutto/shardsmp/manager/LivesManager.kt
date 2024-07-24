@@ -80,7 +80,6 @@ class LivesManager(private val shardSMP: ShardSMP) {
         if (!Bukkit.getOfflinePlayer(uuid).hasPlayedBefore()) return
 
         val playerLives = livesFileConfig.getInt(uuid.toString())
-
         if (playerLives - amount < 1) {
             val offlinePlayer: OfflinePlayer = Bukkit.getOfflinePlayer(uuid)
             offlinePlayer.banPlayer("You have lost all of your lives!")

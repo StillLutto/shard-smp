@@ -1,6 +1,7 @@
 package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
@@ -32,7 +33,9 @@ class Mjolnir(private val shardSMP: ShardSMP) : CustomCooldownItem(
     Material.NETHERITE_AXE,
     shardSMP.miniMessage.deserialize("<gradient:#3a4261:#7277a6>ᴍᴊöʟɴɪʀ")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    "ᴡʜᴇɴ ᴜѕᴇᴅ ᴘʟᴀʏᴇʀѕ ɪɴ ᴀ 5 ʙʟᴏᴄᴋ ʀᴀᴅɪᴜѕ ᴀʀᴇ ѕᴛʀᴜᴄᴋ ᴡɪᴛʜ ʟɪɢʜᴛɴɪɴɢ ᴅᴇᴀʟɪɴɢ 3 ʜᴇᴀʀᴛѕ".wrap(30).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     6,
     true,
     120,

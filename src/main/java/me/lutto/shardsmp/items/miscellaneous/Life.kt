@@ -21,7 +21,7 @@ import org.bukkit.potion.PotionEffectType
 class Life(private val shardSMP: ShardSMP) : CustomItem(
     "life",
     Material.RABBIT_FOOT,
-    shardSMP.miniMessage.deserialize("<color:#ff1c27>Life").decoration(TextDecoration.ITALIC, false)
+    shardSMP.miniMessage.deserialize("<color:#ff1c27>ʟɪꜰᴇ").decoration(TextDecoration.ITALIC, false)
         .decoration(TextDecoration.ITALIC, false),
     listOf(),
     2

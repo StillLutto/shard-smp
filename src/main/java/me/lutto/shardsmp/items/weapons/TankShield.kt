@@ -2,6 +2,7 @@ package me.lutto.shardsmp.items.weapons
 
 import io.papermc.paper.event.player.PlayerItemCooldownEvent
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
@@ -30,7 +31,9 @@ class TankShield(private val shardSMP: ShardSMP) : CustomCooldownItem(
     Material.SHIELD,
     shardSMP.miniMessage.deserialize("<gradient:#3d2216:#633723>ᴛᴀɴᴋ ѕʜɪᴇʟᴅ")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
+    "ʀᴇᴄɪᴠᴇ ʀᴇɢᴇɴᴇʀᴀᴛɪᴏɴ 3 ᴀɴᴅ ʀᴇѕɪѕᴛᴀɴᴄᴇ 3 ꜰᴏʀ 15 ѕᴇᴄᴏɴᴅѕ ᴀʟᴏɴɢ ᴡɪᴛʜ ᴀ ʀᴇᴅᴜᴄᴇᴅ ѕʜɪᴇʟᴅ ѕᴛᴜɴ".wrap(30).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     8,
     false,
     120,

@@ -1,6 +1,7 @@
 package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
@@ -23,7 +24,9 @@ class EarthShatterer(private val shardSMP: ShardSMP) : CustomCooldownItem(
     Material.NETHERITE_PICKAXE,
     shardSMP.miniMessage.deserialize("<gradient:#57301f:#417837>ᴇᴀʀᴛʜ ѕʜᴀᴛᴛᴇʀᴇʀ")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    "ᴜѕᴇ ᴛᴏ ɢᴇᴛ ѕᴘᴇᴇᴅ 2 ꜰᴏʀ 15 ѕᴇᴄᴏɴᴅѕ ᴀɴᴅ ʜᴀѕᴛᴇ 6 ꜰᴏʀ 10 ѕᴇᴄᴏɴᴅѕ".wrap(30).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     7,
     true,
     120,

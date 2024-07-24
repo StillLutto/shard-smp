@@ -1,6 +1,7 @@
 package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
@@ -22,7 +23,9 @@ class PoseidonTrident(private val shardSMP: ShardSMP) : CustomCooldownItem(
     Material.TRIDENT,
     shardSMP.miniMessage.deserialize("<gradient:#1616aa:#3646ff>ᴘᴏѕᴇɪᴅᴏɴ'ѕ ᴛʀɪᴅᴇɴᴛ")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
+    "ᴡʜᴇɴ ᴜѕᴇᴅ ᴄʀᴇᴀᴛᴇ ᴀ ʙᴜʙʙʟᴇ ᴏꜰ ᴀɪʀ ɪɴ ᴀ 10 ʙʟᴏᴄᴋ ʀᴀᴅɪᴜѕ".wrap(30).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     11,
     false,
     180,

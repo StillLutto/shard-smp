@@ -13,7 +13,7 @@ import org.bukkit.event.entity.PlayerDeathEvent
 class Shard(private val shardSMP: ShardSMP) : CustomItem(
     "shard",
     Material.ECHO_SHARD,
-    shardSMP.miniMessage.deserialize("<dark_purple>Shard").decoration(TextDecoration.ITALIC, false)
+    shardSMP.miniMessage.deserialize("<dark_purple>ѕʜᴀʀᴅ").decoration(TextDecoration.ITALIC, false)
         .decoration(TextDecoration.ITALIC, false),
     listOf(),
     1

@@ -1,6 +1,7 @@
 package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
@@ -22,7 +23,9 @@ class TitansEdge(private val shardSMP: ShardSMP) : CustomCooldownItem(
     Material.DIAMOND_SWORD,
     shardSMP.miniMessage.deserialize("<gradient:#aa0000:#ff5555>ᴛɪᴛᴀɴѕ ᴇᴅɢᴇ")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    "ʀᴇᴄᴇɪᴠᴇ ѕᴛʀᴇɴɢᴛʜ 3 ꜰᴏʀ 10 ѕᴇᴄᴏɴᴅѕ".wrap(30).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     5,
     true,
     120,

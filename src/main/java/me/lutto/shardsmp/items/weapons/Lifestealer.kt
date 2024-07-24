@@ -1,6 +1,7 @@
 package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomItem
 import me.lutto.shardsmp.items.Upgradable
 import net.kyori.adventure.text.format.TextDecoration
@@ -24,7 +25,9 @@ class Lifestealer(private val shardSMP: ShardSMP) : CustomItem(
     Material.DIAMOND_SWORD,
     shardSMP.miniMessage.deserialize("<gradient:#57301f:#417837><gradient:#aa0000:#ff2119>ʟɪꜰᴇѕᴛᴇᴀʟᴇʀ").decoration(TextDecoration.ITALIC, false)
         .decoration(TextDecoration.ITALIC, false),
-    listOf(),
+    "ᴡʜᴇɴ ʏᴏᴜ ʜɪᴛ ᴀ ᴍᴏʙ ʜᴀᴠᴇ ᴀ 25% ᴄʜᴀɴᴄᴇ ᴛᴏ ʜᴇᴀʟ ᴛʜᴇ ᴅᴀᴍᴀɢᴇ ʏᴏᴜ ᴅᴇᴀʟᴛ".wrap(30).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     9
 ), Upgradable, Listener {
 

@@ -3,6 +3,7 @@ package me.lutto.shardsmp.items.weapons
 import com.mojang.datafixers.util.Pair
 import io.netty.channel.*
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import me.lutto.shardsmp.items.events.AbilityActivateEvent
@@ -33,7 +34,9 @@ class VanishBlade(private val shardSMP: ShardSMP) : CustomCooldownItem(
     Material.DIAMOND_SWORD,
     shardSMP.miniMessage.deserialize("<gradient:#919191:#c2c2c2>ᴠᴀɴɪѕʜ ʙʟᴀᴅᴇ")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    "ɢʀᴀɴᴛѕ ᴛʀᴜᴇ ɪɴᴠɪѕɪʙɪʟɪᴛʏ ꜰᴏʀ 15 ѕᴇᴄᴏɴᴅѕ".wrap(40).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     10,
     true,
     150,

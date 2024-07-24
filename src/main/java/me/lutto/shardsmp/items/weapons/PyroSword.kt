@@ -1,6 +1,7 @@
 package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
 import net.kyori.adventure.text.Component
@@ -30,7 +31,9 @@ class PyroSword(private val shardSMP: ShardSMP) : CustomCooldownItem(
     Material.DIAMOND_SWORD,
     shardSMP.miniMessage.deserialize("<gradient:#ff8b0f:#ffd60a>ᴘʏʀᴏ ѕᴡᴏʀᴅ")
         .decoration(TextDecoration.ITALIC, false),
-    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Right Click]").decoration(TextDecoration.ITALIC, false)),
+    "ᴡʜᴇɴ ᴀᴄᴛɪᴠᴀᴛᴇᴅ ʜɪᴛ ᴀ ᴘʟᴀʏᴇʀ ᴛᴏ ʀᴇᴍᴏᴠᴇ ᴛʜᴇɪʀ ꜰɪʀᴇ ʀᴇѕɪѕᴛᴀɴᴄᴇ".wrap(30).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     4,
     true,
     240,

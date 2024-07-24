@@ -18,6 +18,10 @@ import org.bukkit.potion.PotionEffectType
 
 class ShardSMP : JavaPlugin() {
 
+    companion object {
+        lateinit var plugin: ShardSMP
+    }
+
     val miniMessage: MiniMessage = MiniMessage.miniMessage()
 
     lateinit var itemManager: ItemManager
@@ -25,6 +29,7 @@ class ShardSMP : JavaPlugin() {
     lateinit var itemEffectManager: ItemEffectManager
 
     override fun onEnable() {
+        plugin = this
         itemManager = ItemManager(this)
         livesManager = LivesManager(this)
         itemEffectManager = ItemEffectManager(this)

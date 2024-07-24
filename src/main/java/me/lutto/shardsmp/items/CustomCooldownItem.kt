@@ -1,7 +1,10 @@
 package me.lutto.shardsmp.items
 
+import me.lutto.shardsmp.ShardSMP
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 
 open class CustomCooldownItem(
     id: String,
@@ -15,6 +18,19 @@ open class CustomCooldownItem(
 ) : CustomItem(
     id, material, displayName, lore, customModelData
 ) {
+
+    init {
+        val itemStack = item
+        val itemMeta = itemStack.itemMeta
+        var loreList: MutableList<Component> = mutableListOf(ShardSMP.plugin.miniMessage.deserialize("<gold>[ѕʜɪꜰᴛ + ʟᴇꜰᴛ ᴄʟɪᴄᴋ]").decoration(TextDecoration.ITALIC, false))
+        if (rightClick) {
+            loreList = mutableListOf(ShardSMP.plugin.miniMessage.deserialize("<gold>[ѕʜɪꜰᴛ + ʀɪɢʜᴛ ᴄʟɪᴄᴋ]").decoration(TextDecoration.ITALIC, false))
+        }
+        loreList.addAll(lore)
+        itemMeta.lore(loreList)
+        itemStack.setItemMeta(itemMeta)
+        this.item = itemStack
+    }
 
     fun isRightClick(): Boolean = rightClick
     fun getCooldownTime(): Int = cooldownTime

@@ -1,8 +1,10 @@
 package me.lutto.shardsmp.items.weapons
 
 import me.lutto.shardsmp.ShardSMP
+import me.lutto.shardsmp.extension.wrap
 import me.lutto.shardsmp.items.CustomCooldownItem
 import me.lutto.shardsmp.items.Upgradable
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.*
 import org.bukkit.entity.Arrow
@@ -23,7 +25,9 @@ class EnderBow(private val shardSMP: ShardSMP) : CustomCooldownItem(
     Material.BOW,
     shardSMP.miniMessage.deserialize("<gradient:#8e1daa:#4b14aa>ᴇɴᴅᴇʀ ʙᴏᴡ").decoration(TextDecoration.ITALIC, false)
         .decoration(TextDecoration.ITALIC, false),
-    listOf(shardSMP.miniMessage.deserialize("<gold>[Shift + Left Click]").decoration(TextDecoration.ITALIC, false)),
+    "ᴜѕᴇ ᴛᴏ ѕʜᴏᴏᴛ ᴀɴ ᴀʀʀᴏᴡ ᴛʜᴀᴛ ᴛᴇʟᴇᴘᴏʀᴛѕ ʏᴏᴜ ᴡʜᴇʀᴇ ɪᴛ ʟᴀɴᴅѕ".wrap(30).map {
+        shardSMP.miniMessage.deserialize("<gray>$it").decoration(TextDecoration.ITALIC, false)
+    },
     3,
     false,
     30,
